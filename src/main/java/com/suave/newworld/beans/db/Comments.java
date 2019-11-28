@@ -1,4 +1,4 @@
-package com.suave.newworld.beans;
+package com.suave.newworld.beans.db;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.extension.activerecord.Model;

@@ -1,6 +1,6 @@
 package com.suave.newworld.service.impl;
 
-import com.suave.newworld.beans.Articles;
+import com.suave.newworld.beans.db.Articles;
 import com.suave.newworld.dao.ArticlesMapper;
 import com.suave.newworld.service.ArticlesService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

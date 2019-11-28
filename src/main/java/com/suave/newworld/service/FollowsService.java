@@ -1,6 +1,6 @@
 package com.suave.newworld.service;
 
-import com.suave.newworld.beans.Follows;
+import com.suave.newworld.beans.db.Follows;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

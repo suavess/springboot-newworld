@@ -3,7 +3,7 @@
 <mapper namespace="com.suave.newworld.dao.ArticlesMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.suave.newworld.beans.Articles">
+    <resultMap id="BaseResultMap" type="com.suave.newworld.beans.db.Articles">
         <id column="id" property="id" />
         <result column="user_id" property="userId" />
         <result column="slug" property="slug" />

@@ -3,7 +3,7 @@
 <mapper namespace="com.suave.newworld.dao.FollowsMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.suave.newworld.beans.Follows">
+    <resultMap id="BaseResultMap" type="com.suave.newworld.beans.db.Follows">
         <result column="user_id" property="userId" />
         <result column="follow_id" property="followId" />
     </resultMap>

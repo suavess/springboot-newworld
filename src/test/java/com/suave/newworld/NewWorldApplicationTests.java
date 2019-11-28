@@ -9,19 +9,27 @@ import com.baomidou.mybatisplus.generator.config.PackageConfig;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+import com.suave.newworld.common.RedisKeyConst;
+import com.suave.newworld.utils.RedisUtil;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class NewWorldApplicationTests {
 
+    @Autowired
+    private RedisUtil redisUtil;
+
+
     @Test
     void contextLoads() {
+
     }
 
 
-//    @Test
-    public void  testGenerator() {
+    //    @Test
+    public void testGenerator() {
         //1. 全局配置
         GlobalConfig config = new GlobalConfig();
         config.setActiveRecord(true) // 是否支持AR模式
@@ -37,7 +45,7 @@ class NewWorldApplicationTests {
                 .setBaseColumnList(true);
 
         //2. 数据源配置
-        DataSourceConfig dsConfig  = new DataSourceConfig();
+        DataSourceConfig dsConfig = new DataSourceConfig();
         dsConfig.setDbType(DbType.MYSQL)  // 设置数据库类型
                 .setDriverName("com.mysql.cj.jdbc.Driver")
                 .setUrl("jdbc:mysql://localhost:3306/new_world?serverTimezone=GMT%2B8")
@@ -50,8 +58,7 @@ class NewWorldApplicationTests {
 //                .setDbColumnUnderline(true)  // 指定表名 字段名是否使用下划线
                 .setNaming(NamingStrategy.underline_to_camel) // 数据库表映射到实体的命名策略
 //                .setTablePrefix("tab_") // 表前缀
-                .setExclude("article_favorites") // 生成的表
-                .setExclude("article_tags") // 生成的表
+                .setExclude("article_favorites", "article_tags") // 生成的表
                 .setRestControllerStyle(true)
                 .setEntityLombokModel(true)
                 .setVersionFieldName("version");

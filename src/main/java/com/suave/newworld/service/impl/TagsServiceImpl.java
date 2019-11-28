@@ -1,6 +1,6 @@
 package com.suave.newworld.service.impl;
 
-import com.suave.newworld.beans.Tags;
+import com.suave.newworld.beans.db.Tags;
 import com.suave.newworld.dao.TagsMapper;
 import com.suave.newworld.service.TagsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

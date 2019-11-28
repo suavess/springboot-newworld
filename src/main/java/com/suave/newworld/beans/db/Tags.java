@@ -1,8 +1,7 @@
-package com.suave.newworld.beans;
+package com.suave.newworld.beans.db;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.baomidou.mybatisplus.annotation.Version;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import lombok.Data;
@@ -20,19 +19,19 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class ArticleFavorites extends Model<ArticleFavorites> {
+public class Tags extends Model<Tags> {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "article_id", type = IdType.AUTO)
-    private Integer articleId;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
 
-    private Integer userId;
+    private String name;
 
 
     @Override
     protected Serializable pkVal() {
-        return this.articleId;
+        return this.id;
     }
 
 }

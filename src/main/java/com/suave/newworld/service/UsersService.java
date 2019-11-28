@@ -1,6 +1,6 @@
 package com.suave.newworld.service;
 
-import com.suave.newworld.beans.Users;
+import com.suave.newworld.beans.db.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author Suave
  * @since 2019-11-26
  */
-public interface UsersService extends IService<Users> {
+public interface UsersService extends IService<User> {
 
 }

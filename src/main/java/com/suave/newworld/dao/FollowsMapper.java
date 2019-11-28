@@ -1,6 +1,6 @@
 package com.suave.newworld.dao;
 
-import com.suave.newworld.beans.Follows;
+import com.suave.newworld.beans.db.Follows;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
