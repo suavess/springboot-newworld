@@ -1,9 +1,8 @@
 package com.suave.newworld.utils;
 
 import com.suave.newworld.beans.db.User;
-import com.suave.newworld.exception.RespError;
-import com.suave.newworld.exception.RespException;
 import io.jsonwebtoken.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -16,35 +15,37 @@ import java.util.HashMap;
  */
 @Component
 public class JwtTokenUtil {
-    private static final String ISS = "suave";
-    public static final String TOKEN_HEADER = "Authorization";
+    @Value("${token.iss}")
+    private String iss;
     /**
-     * Token过期时间
+     * Token过期时间(秒)
      */
-    public static final long EXPIRATION = 3600L;
+    @Value("${token.expiration}")
+    public long expiration;
     /**
      * Token秘钥
      */
-    private static final String SECRET = "ipyq";
+    @Value("${token.secret}")
+    private String secret;
 
     /**
      * 生成Token，存入username
      * @param user
      * @return
      */
-    public static String createToken(User user) {
+    public String createToken(User user) {
         //可以将基本不重要的对象信息放到claims中，此处信息不多,见简单直接放到配置内
-        HashMap<String,Object> claims = new HashMap<String,Object>(1);
-        claims.put("username",user.getUsername());
+        HashMap<String,Object> claims = new HashMap<>(1);
+        claims.put("email",user.getEmail());
         //id是重要信息，进行加密下
         return Jwts.builder()
-                .signWith(SignatureAlgorithm.HS512, SECRET)
+                .signWith(SignatureAlgorithm.HS512, secret)
                 // 这里要早set一点，放到后面会覆盖别的字段
                 .setClaims(claims)
-                .setIssuer(ISS)
-                .setSubject(user.getUsername())
+                .setIssuer(iss)
+                .setSubject(user.getEmail())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
                 .compact();
     }
 
@@ -57,9 +58,9 @@ public class JwtTokenUtil {
     }
 
     /**
-     * 根据token获取cardNumber
+     * 根据token获取username
      */
-    public String getUsernameFromToken(String token) {
+    public String getEmailFromToken(String token) {
         return getClaimsFromToken(token).getSubject();
     }
 
@@ -75,7 +76,7 @@ public class JwtTokenUtil {
      */
     private Claims getClaimsFromToken(String token) {
         return Jwts.parser()
-                .setSigningKey(SECRET)
+                .setSigningKey(secret)
                 .parseClaimsJws(token)
                 .getBody();
     }

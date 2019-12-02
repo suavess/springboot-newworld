@@ -36,7 +36,6 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (!(handler instanceof HandlerMethod)) {
-            // 这个一般是到类上把， 放行
             return true;
         }
         HandlerMethod handlerMethod = (HandlerMethod) handler;
@@ -52,11 +51,11 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             if (jwtTokenUtil.isTokenExpired(token)) {
                 throw new RespException(RespError.TOKEN_EXPIRED);
             }
-            String cardNumber = jwtTokenUtil.getUsernameFromToken(token);
+            String username = jwtTokenUtil.getEmailFromToken(token);
             // 从缓存中取出和用户相关的信息
-             Object json = redisUtil.get(RedisKeyConst.USER.getKey()+cardNumber);
+             Object json = redisUtil.get(RedisKeyConst.USER_INFO.getKey()+username);
             List<String> roles = JSONUtil.parseArray(json).toList(String.class);
-            request.setAttribute("cardNumber", cardNumber);
+            request.setAttribute("cardNumber", username);
             // 该用户包含ADMIN权限就直接放行
             if (roles.contains(Const.RoleType.ADMIN)) {
                 return true;

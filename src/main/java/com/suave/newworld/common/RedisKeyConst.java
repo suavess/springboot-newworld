@@ -3,10 +3,11 @@ package com.suave.newworld.common;
 /**
  * @Author: Suave
  * @Date: 2019-11-28 21:20
- * @Desc:
+ * @Desc: Redis键
  */
 public enum RedisKeyConst {
-    USER("USER");
+    USER_TOKEN("USER_TOKEN"),
+    USER_INFO("USER_INFO");
 
     RedisKeyConst(String key) {
         this.key = key;

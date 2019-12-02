@@ -1,7 +1,9 @@
 package com.suave.newworld;
 
+import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
 import com.baomidou.mybatisplus.generator.config.GlobalConfig;
@@ -9,11 +11,19 @@ import com.baomidou.mybatisplus.generator.config.PackageConfig;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+import com.suave.newworld.beans.db.User;
+import com.suave.newworld.beans.input.UserLoginInput;
 import com.suave.newworld.common.RedisKeyConst;
+import com.suave.newworld.dao.UserMapper;
+import com.suave.newworld.utils.JwtTokenUtil;
 import com.suave.newworld.utils.RedisUtil;
+import org.apache.catalina.security.SecurityUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @SpringBootTest
 class NewWorldApplicationTests {
@@ -21,12 +31,31 @@ class NewWorldApplicationTests {
     @Autowired
     private RedisUtil redisUtil;
 
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private UserMapper userMapper;
 
     @Test
     void contextLoads() {
-
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        HashMap<String, String> map = new HashMap<>(2);
+        map.put("email","1132888093@qq.com");
+        map.put("password",SecureUtil.md5("123456"));
+        userQueryWrapper.allEq(map);
+        System.out.println(userMapper.selectOne(userQueryWrapper));
+//        String s = SecureUtil.md5("123456");
+//        System.out.println("s = " + s);
     }
 
+//    @Test
+    public void testJwt(){
+        User user = new User();
+        user.setUsername("1132888093");
+        String token = jwtTokenUtil.createToken(user);
+        System.out.println("token = " + token);
+        System.out.println("jwtTokenUtil.getUsernameFromToken(token) = " + jwtTokenUtil.getEmailFromToken(token));
+    }
 
     //    @Test
     public void testGenerator() {

@@ -1,6 +1,6 @@
 package com.suave.newworld.dao;
 
-import com.suave.newworld.beans.db.Follows;
+import com.suave.newworld.beans.db.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author Suave
  * @since 2019-11-26
  */
-public interface FollowsMapper extends BaseMapper<Follows> {
+public interface UserMapper extends BaseMapper<User> {
 
 }

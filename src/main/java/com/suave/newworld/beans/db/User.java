@@ -1,10 +1,8 @@
 package com.suave.newworld.beans.db;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.baomidou.mybatisplus.annotation.Version;
-import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,6 +29,7 @@ public class User extends Model<User> {
 
     private String username;
 
+    @TableField(select = false)
     private String password;
 
     private String email;

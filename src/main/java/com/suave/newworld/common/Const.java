@@ -11,8 +11,4 @@ public class Const {
         String ADMIN = "ADMIN";
     }
 
-    public interface RedisKeyConst {
-        String USER = "USER";
-        String ADMIN = "ADMIN";
-    }
 }

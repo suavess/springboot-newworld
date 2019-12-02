@@ -45,6 +45,26 @@ public class RespException extends RuntimeException {
         this.msg = msg;
     }
 
+    public RespException(String message, RespError respError) {
+        super(message);
+        this.respError = respError;
+    }
+
+    public RespException(String message, Throwable cause, RespError respError) {
+        super(message, cause);
+        this.respError = respError;
+    }
+
+    public RespException(Throwable cause, RespError respError) {
+        super(cause);
+        this.respError = respError;
+    }
+
+    public RespException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, RespError respError) {
+        super(message, cause, enableSuppression, writableStackTrace);
+        this.respError = respError;
+    }
+
     @Override
     public String getMessage() {
         return msg;

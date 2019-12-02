@@ -7,7 +7,8 @@ package com.suave.newworld.exception;
  */
 public enum RespError {
     TOKEN_ERROR(401, "非法Token"),
-    TOKEN_EXPIRED(402, "Token过期");
+    TOKEN_EXPIRED(402, "Token过期"),
+    USER_NOT_FOUND(403, "用户名或密码错误");
     private int code;
     private String msg;
 
