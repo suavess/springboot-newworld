@@ -1,6 +1,6 @@
 package com.suave.newworld.service.impl;
 
-import com.suave.newworld.beans.db.Comments;
+import com.suave.newworld.beans.Comments;
 import com.suave.newworld.dao.CommentsMapper;
 import com.suave.newworld.service.CommentsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

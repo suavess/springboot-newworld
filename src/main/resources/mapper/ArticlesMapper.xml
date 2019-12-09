@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suave.newworld.dao.ArticlesMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.suave.newworld.beans.Articles">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="title" property="title"/>
+        <result column="description" property="description"/>
+        <result column="body" property="body"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+        <result column="version" property="version"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+            id,
+            user_id,
+            title,
+            description,
+            body,
+            created_at,
+            updated_at,
+            version
+    </sql>
+    <!--  查询文章总数  -->
+    <select id="articlesCount" resultType="java.lang.Integer">
+        select count(1)
+        from articles a
+        where 1 = 1
+        <if test="tag != null">
+            and a.id in (select article_id from article_tags where tag_id = #{tag})
+        </if>
+        <if test="favorited != null">
+            and a.id in (select article_id from article_favorites where user_id = #{favorited})
+        </if>
+        <if test="author != null">
+            and a.user_id = #{author}
+        </if>
+    </select>
+
+    <!--  查询文章总数  -->
+    <select id="articlesCountByFeed" resultType="java.lang.Integer">
+        select count(1)
+        from articles
+        where user_id in (SELECT follow_id from follows where user_id = #{id})
+    </select>
+
+    <!--  文章列表查询映射  -->
+    <resultMap id="ArticlesOutput" type="com.suave.newworld.beans.output.ArticlesOutput">
+        <id property="id" column="id" />
+        <result property="title" column="title" />
+        <result property="description" column="description" />
+        <result property="body" column="body" />
+        <result property="createdAt" column="created_at" />
+        <result property="updatedAt" column="updated_at" />
+        <result property="favoritesCount" column="favorites_count" />
+        <association property="author" javaType="com.suave.newworld.beans.output.Author">
+            <result property="username" column="author_username"/>
+            <result property="bio" column="author_bio"/>
+            <result property="image" column="author_image"/>
+        </association>
+        <collection property="tagList" ofType="string">
+            <constructor>
+                <arg column="tag_list"/>
+            </constructor>
+        </collection>
+    </resultMap>
+    <select id="findArticlesList" resultMap="ArticlesOutput">
+        select
+            a.id,
+            a.title,
+            a.description,
+            a.body,
+            a.created_at,
+            a.updated_at,
+            tags.name as tag_list,
+            u.username as author_username,
+            u.bio as author_bio,
+            u.image as author_image,
+            (select count(1) from article_favorites af where af.article_id = a.id) as favorites_count
+        from
+            articles as a
+            left join article_tags t on a.id = t.article_id
+            left join tags on t.tag_id = tags.id
+            left join users as u on u.id = a.user_id
+            left join article_favorites af on a.user_id = af.user_id
+        where
+            1 = 1
+        <if test="author != null">
+            and u.id = #{author}
+        </if>
+        <if test="tag != null">
+            and t.tag_id = #{tag}
+        </if>
+        <if test="favorited != null">
+            and af.user_id = #{favorited}
+        </if>
+        limit #{offset},#{limit}
+    </select>
+
+    <select id="findArticlesFeedList" resultMap="ArticlesOutput">
+        select
+        a.id,
+        a.title,
+        a.description,
+        a.body,
+        a.created_at,
+        a.updated_at,
+        tags.name as tag_list,
+        u.username as author_username,
+        u.bio as author_bio,
+        u.image as author_image,
+        (select count(1) from article_favorites af where af.article_id = a.id) as favorites_count
+        from
+        articles as a
+        left join article_tags t on a.id = t.article_id
+        left join tags on t.tag_id = tags.id
+        left join users as u on u.id = a.user_id
+        left join article_favorites af on a.user_id = af.user_id
+        where
+        u.id in (SELECT follow_id from follows where user_id = #{id})
+        limit #{offset},#{limit}
+    </select>
+
+    <select id="findArticleById" resultMap="ArticlesOutput">
+        select
+        a.id,
+        a.title,
+        a.description,
+        a.body,
+        a.created_at,
+        a.updated_at,
+        tags.name as tag_list,
+        u.username as author_username,
+        u.bio as author_bio,
+        u.image as author_image,
+        (select count(1) from article_favorites af where af.article_id = a.id) as favorites_count
+        from
+        articles as a
+        left join article_tags t on a.id = t.article_id
+        left join tags on t.tag_id = tags.id
+        left join users as u on u.id = a.user_id
+        left join article_favorites af on a.user_id = af.user_id
+        where
+        a.id = #{id}
+        limit 1
+    </select>
+
+</mapper>

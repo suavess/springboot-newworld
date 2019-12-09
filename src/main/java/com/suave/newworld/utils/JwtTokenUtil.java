@@ -1,6 +1,6 @@
 package com.suave.newworld.utils;
 
-import com.suave.newworld.beans.db.User;
+import com.suave.newworld.beans.User;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

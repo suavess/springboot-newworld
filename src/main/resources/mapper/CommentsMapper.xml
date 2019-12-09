@@ -3,7 +3,7 @@
 <mapper namespace="com.suave.newworld.dao.CommentsMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.suave.newworld.beans.db.Comments">
+    <resultMap id="BaseResultMap" type="com.suave.newworld.beans.Comments">
         <id column="id" property="id" />
         <result column="body" property="body" />
         <result column="article_id" property="articleId" />

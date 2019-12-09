@@ -20,9 +20,9 @@
     <!-- 控制台输出日志 -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <!-- 日志级别过滤INFO以下 -->
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>INFO</level>
-        </filter>
+<!--        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">-->
+<!--            <level>INFO</level>-->
+<!--        </filter>-->
         <encoder>
             <!-- 按照上面配置的LOG_PATTERN来打印日志 -->
             <pattern>${CONSOLE_LOG_PATTERN}</pattern>

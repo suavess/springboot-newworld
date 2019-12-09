@@ -1,8 +1,7 @@
 package com.suave.newworld.intercept;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.json.JSONUtil;
 import com.suave.newworld.annotation.Auth;
+import com.suave.newworld.beans.User;
 import com.suave.newworld.common.Const;
 import com.suave.newworld.common.RedisKeyConst;
 import com.suave.newworld.exception.RespError;
@@ -10,6 +9,7 @@ import com.suave.newworld.exception.RespException;
 import com.suave.newworld.utils.JwtTokenUtil;
 import com.suave.newworld.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -17,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * @Author: Suave
@@ -33,12 +32,22 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
+    @Value("${token.header}")
+    private String header;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (!(handler instanceof HandlerMethod)) {
             return true;
         }
         HandlerMethod handlerMethod = (HandlerMethod) handler;
+        String token = request.getHeader(header);
+        String email = null;
+        if (token != null) {
+            email = jwtTokenUtil.getEmailFromToken(token);
+            // 将用户email存入request
+            request.setAttribute("email", email);
+        }
         Auth auth = handlerMethod.getMethodAnnotation(Auth.class);
         if (auth == null) {
             // 没有加注解，不需要权限，直接放行
@@ -47,20 +56,23 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         try {
             // 需要的权限
             String value = auth.value();
-            String token = request.getHeader("Authorization");
             if (jwtTokenUtil.isTokenExpired(token)) {
                 throw new RespException(RespError.TOKEN_EXPIRED);
             }
-            String username = jwtTokenUtil.getEmailFromToken(token);
             // 从缓存中取出和用户相关的信息
-             Object json = redisUtil.get(RedisKeyConst.USER_INFO.getKey()+username);
-            List<String> roles = JSONUtil.parseArray(json).toList(String.class);
-            request.setAttribute("cardNumber", username);
-            // 该用户包含ADMIN权限就直接放行
-            if (roles.contains(Const.RoleType.ADMIN)) {
+            Object redisToken = redisUtil.get(RedisKeyConst.USER_TOKEN.getKey() + email);
+            if (!token.equals(redisToken)) {
+                // 如果redis中的token与传过来的token不一致，表示重复登录
+                throw new RespException(RespError.TOKEN_OFFSITE);
+            }
+            // 取出redis中的数据
+            Object info = redisUtil.get(RedisKeyConst.USER_INFO.getKey() + email);
+            User user = (User) info;
+            // 管理员权限允许访问所有接口
+            if (Const.RoleType.ADMIN.equals(user.getRole())) {
                 return true;
             }
-            if (CollUtil.isNotEmpty(roles) && roles.contains(value)) {
+            if (value.equals(user.getRole())) {
                 return true;
             } else {
                 throw new RespException(RespError.TOKEN_ERROR);

@@ -1,8 +1,10 @@
-package com.suave.newworld.beans.db;
+package com.suave.newworld.beans;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-
+import com.baomidou.mybatisplus.annotation.Version;
+import com.baomidou.mybatisplus.annotation.TableId;
+import java.time.LocalDateTime;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,24 +21,24 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("users")
-public class User extends Model<User> {
+public class Articles extends Model<Articles> {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    private String username;
+    private Integer userId;
 
-    @TableField(select = false)
-    private String password;
+    private String title;
 
-    private String email;
+    private String description;
 
-    private String bio;
+    private String body;
 
-    private String image;
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 
     @Version
     private Integer version;

@@ -1,6 +1,6 @@
 package com.suave.newworld.dao;
 
-import com.suave.newworld.beans.db.Comments;
+import com.suave.newworld.beans.Comments;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

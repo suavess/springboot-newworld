@@ -1,6 +1,6 @@
 package com.suave.newworld.service;
 
-import com.suave.newworld.beans.db.Tags;
+import com.suave.newworld.beans.Tags;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
