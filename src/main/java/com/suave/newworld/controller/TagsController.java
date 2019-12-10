@@ -1,9 +1,16 @@
 package com.suave.newworld.controller;
 
 
+import com.suave.newworld.beans.RespObj;
+import com.suave.newworld.beans.Tags;
+import com.suave.newworld.service.TagsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * <p>
@@ -17,4 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/tags")
 public class TagsController {
 
+    @Autowired
+    TagsService tagsService;
+
+    @GetMapping("")
+    public RespObj<List<Tags>> list(){
+        return RespObj.success(tagsService.list());
+    }
 }

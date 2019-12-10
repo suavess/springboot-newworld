@@ -20,6 +20,7 @@ import com.suave.newworld.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.suave.newworld.utils.JwtTokenUtil;
 import com.suave.newworld.utils.RedisUtil;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
@@ -142,8 +143,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public void update(UserUpdateInput input) throws RespException {
         User user = new User();
         BeanUtil.copyProperties(input,user);
-        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.set("email",input.getEmail());
+        QueryWrapper<User> updateWrapper = new QueryWrapper<>();
+        updateWrapper.select("email",input.getEmail());
         //更新数据库中用户信息参数
         userMapper.update(user,updateWrapper);
         //同时更新redis中的设置

@@ -1,10 +1,10 @@
 package com.suave.newworld.beans;
 
+import cn.hutool.core.date.DateTime;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.Version;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -36,9 +36,9 @@ public class Articles extends Model<Articles> {
 
     private String body;
 
-    private LocalDateTime createdAt;
+    private DateTime createdAt;
 
-    private LocalDateTime updatedAt;
+    private DateTime updatedAt;
 
     @Version
     private Integer version;

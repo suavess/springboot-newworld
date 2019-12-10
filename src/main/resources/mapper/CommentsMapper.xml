@@ -18,4 +18,30 @@
         id, body, article_id, user_id, created_at, updated_at, version
     </sql>
 
+    <resultMap id="CommentsOutput" type="com.suave.newworld.beans.output.CommentsOutput">
+        <id property="id" column="id" />
+        <result property="body" column="body" />
+        <result property="createdAt" column="created_at" />
+        <result property="updatedAt" column="updated_at" />
+        <association property="author" javaType="com.suave.newworld.beans.output.Author">
+            <result property="username" column="author_username"/>
+            <result property="bio" column="author_bio"/>
+            <result property="image" column="author_image"/>
+        </association>
+    </resultMap>
+
+    <select id="findCommentsByArticleId" resultMap="CommentsOutput">
+        select
+            c.id, c.body, c.created_at, c.updated_at,
+            u.username as author_username,u.bio as author_bio,u.image as author_image
+        from
+            comments as c
+        left join
+            users as u
+        on
+            c.user_id = u.id
+        where
+            c.user_id = #{id}
+    </select>
+
 </mapper>

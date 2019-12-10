@@ -3,6 +3,8 @@ package com.suave.newworld.controller;
 import com.suave.newworld.annotation.Auth;
 import com.suave.newworld.beans.Page;
 import com.suave.newworld.beans.RespObj;
+import com.suave.newworld.beans.input.ArticleUpdateInput;
+import com.suave.newworld.beans.input.ArticlesCreateInput;
 import com.suave.newworld.beans.input.ArticlesFeedListInput;
 import com.suave.newworld.beans.input.ArticlesListInput;
 import com.suave.newworld.beans.output.ArticlesOutput;
@@ -24,20 +26,37 @@ public class ArticlesController {
     ArticlesService articlesService;
 
     /**
-     * 返回文章列表，分页
+     * "/articles"(GET)返回文章列表，分页
+     *
      * @param input
      * @return
      */
     @GetMapping("")
     public RespObj<Page<ArticlesOutput>> list(@RequestBody(required = false) ArticlesListInput input) {
-        if(input==null){
+        if (input == null) {
             input = new ArticlesListInput();
         }
         return RespObj.success(articlesService.articlesList(input));
     }
 
     /**
-     * 返回所关注的用户的文章
+     * "/articles"(POST)新建文章
+     *
+     * @param input
+     * @param request
+     * @return
+     */
+    @Auth
+    @PostMapping("")
+    public RespObj create(@RequestBody ArticlesCreateInput input, HttpServletRequest request) {
+        String email = request.getAttribute("email").toString();
+        articlesService.createArticle(input, email);
+        return RespObj.success();
+    }
+
+    /**
+     * "/articles/feed"(GET)返回所关注的用户的文章
+     *
      * @param input
      * @return
      */
@@ -50,13 +69,73 @@ public class ArticlesController {
     }
 
     /**
-     * 传ID查询某一篇文章
+     * "/articles/{id}"(GET)传ID查询某一篇文章
+     *
      * @param id
      * @return
      */
     @GetMapping("{id}")
-    public RespObj<ArticlesOutput> article(@PathVariable String id){
+    public RespObj<ArticlesOutput> article(@PathVariable Integer id) {
         return RespObj.success(articlesService.findArticleById(id));
     }
 
+    /**
+     * "/articles/{id}"(PUT)传ID更新某一篇文章
+     *
+     * @param id
+     * @param input
+     * @param request
+     * @return
+     */
+    @Auth
+    @PutMapping("{id}")
+    public RespObj update(@PathVariable Integer id, @RequestBody ArticleUpdateInput input, HttpServletRequest request) {
+        String email = request.getAttribute("email").toString();
+        articlesService.updateArticleById(id, input, email);
+        return RespObj.success();
+    }
+
+    /**
+     * /articles/{id}"(DELETE)传ID删除某一篇文章
+     *
+     * @param id
+     * @return
+     */
+    @Auth
+    @DeleteMapping("{id}")
+    public RespObj del(@PathVariable Integer id, HttpServletRequest request) {
+        String email = request.getAttribute("email").toString();
+        articlesService.deleteArticleById(id, email);
+        return RespObj.success();
+    }
+
+    /**
+     * /articles/favorite"(POST)传Id收藏某一篇文章
+     *
+     * @param id      文章id
+     * @param request
+     * @return
+     */
+    @Auth
+    @PostMapping("favorite")
+    public RespObj favorite(@RequestBody Integer id, HttpServletRequest request) {
+        String email = request.getAttribute("email").toString();
+        articlesService.favorite(id,email);
+        return RespObj.success();
+    }
+
+    /**
+     * /articles/favorite"(DELETE)传Id取消收藏某一篇文章
+     *
+     * @param id      文章id
+     * @param request
+     * @return
+     */
+    @Auth
+    @DeleteMapping("favorite")
+    public RespObj unFavorite(@RequestBody Integer id, HttpServletRequest request) {
+        String email = request.getAttribute("email").toString();
+        articlesService.unFavorite(id,email);
+        return RespObj.success();
+    }
 }

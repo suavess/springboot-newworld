@@ -10,10 +10,12 @@ import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.suave.newworld.beans.Page;
+import com.suave.newworld.beans.Tags;
 import com.suave.newworld.beans.User;
 import com.suave.newworld.beans.input.ArticlesListInput;
 import com.suave.newworld.beans.output.ArticlesOutput;
 import com.suave.newworld.dao.ArticlesMapper;
+import com.suave.newworld.dao.TagsMapper;
 import com.suave.newworld.dao.UserMapper;
 import com.suave.newworld.service.ArticlesService;
 import com.suave.newworld.utils.JwtTokenUtil;
@@ -21,6 +23,10 @@ import com.suave.newworld.utils.RedisUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @SpringBootTest
 class NewWorldApplicationTests {
@@ -33,17 +39,20 @@ class NewWorldApplicationTests {
     @Autowired
     private UserMapper userMapper;
     @Autowired
+    private TagsMapper tagsMapper;
+    @Autowired
     ArticlesMapper articlesMapper;
     @Autowired
     ArticlesService articlesService;
 
     @Test
     void contextLoads() {
-        ArticlesListInput input = new ArticlesListInput();
-        input.setPage(1);
-        input.setSize(10);
-        Page<ArticlesOutput> articlesList = articlesService.articlesList(input);
-        System.out.println(articlesList.toString());
+        List<Tags> tags = tagsMapper.selectList(null);
+        List<Integer> tmp = new ArrayList<>();
+        tags.forEach(tag->{
+            tmp.add(tag.getId());
+        });
+        System.out.println("tmp = " + tmp);
     }
 
 //    @Test

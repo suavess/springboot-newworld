@@ -44,9 +44,15 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         String token = request.getHeader(header);
         String email = null;
         if (token != null) {
-            email = jwtTokenUtil.getEmailFromToken(token);
-            // 将用户email存入request
-            request.setAttribute("email", email);
+            try {
+                if (!jwtTokenUtil.isTokenExpired(token)) {
+                    email = jwtTokenUtil.getEmailFromToken(token);
+                    // 将用户email存入request
+                    request.setAttribute("email", email);
+                }
+            } catch (Exception e) {
+                System.out.println("e = " + e);
+            }
         }
         Auth auth = handlerMethod.getMethodAnnotation(Auth.class);
         if (auth == null) {

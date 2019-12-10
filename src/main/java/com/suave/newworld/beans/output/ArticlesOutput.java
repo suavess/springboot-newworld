@@ -1,5 +1,7 @@
 package com.suave.newworld.beans.output;
 
+import cn.hutool.core.date.DateTime;
+import com.suave.newworld.beans.Tags;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -18,12 +20,10 @@ public class ArticlesOutput {
     private String title;
     private String description;
     private String body;
-    @DateTimeFormat(pattern = "yyyy-MM-dd  HH:mm:ss")
-    private Timestamp createdAt;
-    @DateTimeFormat(pattern = "yyyy-MM-dd  HH:mm:ss")
-    private Timestamp updatedAt;
+    private DateTime createdAt;
+    private DateTime updatedAt;
     private int favoritesCount;
     private boolean favorited;
     private Author author;
-    private List<String> tagList;
+    private List<Tags> tagList;
 }

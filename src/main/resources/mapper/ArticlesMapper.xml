@@ -50,45 +50,45 @@
 
     <!--  文章列表查询映射  -->
     <resultMap id="ArticlesOutput" type="com.suave.newworld.beans.output.ArticlesOutput">
-        <id property="id" column="id" />
-        <result property="title" column="title" />
-        <result property="description" column="description" />
-        <result property="body" column="body" />
-        <result property="createdAt" column="created_at" />
-        <result property="updatedAt" column="updated_at" />
-        <result property="favoritesCount" column="favorites_count" />
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="description" column="description"/>
+        <result property="body" column="body"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="favoritesCount" column="favorites_count"/>
         <association property="author" javaType="com.suave.newworld.beans.output.Author">
             <result property="username" column="author_username"/>
             <result property="bio" column="author_bio"/>
             <result property="image" column="author_image"/>
         </association>
-        <collection property="tagList" ofType="string">
-            <constructor>
-                <arg column="tag_list"/>
-            </constructor>
+        <collection property="tagList" ofType="com.suave.newworld.beans.Tags">
+            <id property="id" column="tid"/>
+            <result property="name" column="t_name"/>
         </collection>
     </resultMap>
     <select id="findArticlesList" resultMap="ArticlesOutput">
         select
-            a.id,
-            a.title,
-            a.description,
-            a.body,
-            a.created_at,
-            a.updated_at,
-            tags.name as tag_list,
-            u.username as author_username,
-            u.bio as author_bio,
-            u.image as author_image,
-            (select count(1) from article_favorites af where af.article_id = a.id) as favorites_count
+        a.id,
+        a.title,
+        a.description,
+        a.body,
+        a.created_at,
+        a.updated_at,
+        tags.id as tid,
+        tags.name as t_name,
+        u.username as author_username,
+        u.bio as author_bio,
+        u.image as author_image,
+        (select count(1) from article_favorites af where af.article_id = a.id) as favorites_count
         from
-            articles as a
-            left join article_tags t on a.id = t.article_id
-            left join tags on t.tag_id = tags.id
-            left join users as u on u.id = a.user_id
-            left join article_favorites af on a.user_id = af.user_id
+        articles as a
+        left join article_tags t on a.id = t.article_id
+        left join tags on t.tag_id = tags.id
+        left join users as u on u.id = a.user_id
+        left join article_favorites af on a.user_id = af.user_id
         where
-            1 = 1
+        1 = 1
         <if test="author != null">
             and u.id = #{author}
         </if>
@@ -148,5 +148,24 @@
         a.id = #{id}
         limit 1
     </select>
+    <insert id="insertTagsByArticleId">
+        insert into article_tags (article_id, tag_id)
+        values
+        <foreach collection="tagList" item="tag">
+            (
+            #{id}
+            #{tag.value}
+            )
+        </foreach>
+    </insert>
+    <delete id="delTagsByArticleId">
+        delete from article_tags where article_id = #{id}
+    </delete>
 
+    <insert id="insertFavoriteArticle">
+        insert into article_favorites values (#{aid},#{uid})
+    </insert>
+    <delete id="delFavoriteArticle">
+        delete from article_favorites where user_id = #{uid} and article_id=#{aid}
+    </delete>
 </mapper>

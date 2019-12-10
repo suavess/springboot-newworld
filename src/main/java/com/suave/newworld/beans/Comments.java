@@ -1,5 +1,6 @@
 package com.suave.newworld.beans;
 
+import cn.hutool.core.date.DateTime;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.Version;
@@ -34,9 +35,9 @@ public class Comments extends Model<Comments> {
 
     private Integer userId;
 
-    private LocalDateTime createdAt;
+    private DateTime createdAt;
 
-    private LocalDateTime updatedAt;
+    private DateTime updatedAt;
 
     @Version
     private Integer version;

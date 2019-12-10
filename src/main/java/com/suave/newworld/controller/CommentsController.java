@@ -1,13 +1,20 @@
 package com.suave.newworld.controller;
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.suave.newworld.annotation.Auth;
+import com.suave.newworld.beans.RespObj;
+import com.suave.newworld.beans.input.CommentsCreateInput;
+import com.suave.newworld.beans.output.CommentsOutput;
+import com.suave.newworld.service.CommentsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author Suave
@@ -16,5 +23,49 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/comments")
 public class CommentsController {
+
+    @Autowired
+    CommentsService commentsService;
+
+    /**
+     * "/comments"(POST)添加评论
+     *
+     * @param input
+     * @param request
+     * @return
+     */
+    @Auth
+    @PostMapping("")
+    public RespObj create(@RequestBody CommentsCreateInput input, HttpServletRequest request) {
+        String email = request.getAttribute("email").toString();
+        commentsService.create(input, email);
+        return RespObj.success();
+    }
+
+    /**
+     * "/comments/{id}"(GET)返回某一篇文章的所有评论
+     *
+     * @param id 文章id
+     * @return
+     */
+    @GetMapping("{id}")
+    public RespObj<List<CommentsOutput>> list(@PathVariable Integer id) {
+        return RespObj.success(commentsService.list(id));
+    }
+
+    /**
+     * "/comments/{aid}/{cid}"(GET)返回某一篇文章的某一条评论
+     * @param aid     文章id
+     * @param cid     评论id
+     * @param request
+     * @return
+     */
+    @Auth
+    @DeleteMapping("{aid}/{cid}")
+    public RespObj del(@PathVariable Integer aid, @PathVariable Integer cid, HttpServletRequest request) {
+        String email = request.getAttribute("email").toString();
+        commentsService.del(aid, cid, email);
+        return RespObj.success();
+    }
 
 }
