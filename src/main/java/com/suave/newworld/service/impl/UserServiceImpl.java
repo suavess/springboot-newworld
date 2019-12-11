@@ -89,9 +89,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public void register(UserRegisterInput input) throws RespException {
-        if (input.getUsername().length() < 6) {
-            throw new RespException(RespError.CUSTOM_ERROR, "用户名不能小于6位");
-        }
         if (input.getUsername().length() > 15) {
             throw new RespException(RespError.CUSTOM_ERROR, "用户名不能大于15位");
         }
@@ -151,6 +148,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Transactional(rollbackFor = {RespException.class})
     public void update(UserUpdateInput input) throws RespException {
         User user = new User();
+        if (input.getPassword()!=null){
+            if (input.getPassword().length()<6){
+                throw new RespException(RespError.CUSTOM_ERROR,"密码不能少于6位！");
+            }
+            input.setPassword(SecureUtil.md5(input.getPassword()));
+        }
         BeanUtil.copyProperties(input, user);
         QueryWrapper<User> updateWrapper = new QueryWrapper<>();
         updateWrapper.select("email", input.getEmail());
