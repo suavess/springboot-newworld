@@ -182,6 +182,18 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> i
     @CacheEvict(value = {"ArticlesList", "ArticlesFeedList"}, allEntries = true)
     public void createArticle(ArticlesCreateInput input, String email) throws RespException {
         Articles articles = new Articles();
+        if (StrUtil.isEmpty(input.getTitle())){
+            throw new RespException(RespError.CUSTOM_ERROR,"请输入文章标题");
+        }
+        if (StrUtil.isEmpty(input.getDescription())){
+            throw new RespException(RespError.CUSTOM_ERROR,"请输入文章描述");
+        }
+        if (StrUtil.isEmpty(input.getBody())){
+            throw new RespException(RespError.CUSTOM_ERROR,"请输入文章内容");
+        }
+        if (input.getBody().length()==0){
+            throw new RespException(RespError.CUSTOM_ERROR,"请至少选择一个文章标签");
+        }
         BeanUtil.copyProperties(input, articles);
         DateTime now = DateTime.now();
         articles.setCreatedAt(now)

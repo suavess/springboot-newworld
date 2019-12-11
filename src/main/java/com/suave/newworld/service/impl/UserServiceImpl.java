@@ -90,14 +90,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Transactional(rollbackFor = {Exception.class})
     public void register(UserRegisterInput input) throws RespException {
         if (input.getUsername().length() < 6) {
-            throw new RespException(RespError.CUSTOM_ERROR, "用户名不能小于六位");
+            throw new RespException(RespError.CUSTOM_ERROR, "用户名不能小于6位");
+        }
+        if (input.getUsername().length() > 15) {
+            throw new RespException(RespError.CUSTOM_ERROR, "用户名不能大于15位");
         }
         final String emailRegex = "^([a-zA-Z0-9]*[-_]?[a-zA-Z0-9]+)*@([a-zA-Z0-9]*[-_]?[a-zA-Z0-9]+)+[\\.][A-Za-z]{2,3}([\\.][A-Za-z]{2})?$";
         if (!ReUtil.isMatch(emailRegex, input.getEmail())) {
             throw new RespException(RespError.CUSTOM_ERROR, "邮箱格式不正确");
         }
         if (input.getPassword().length() < 6) {
-            throw new RespException(RespError.CUSTOM_ERROR, "密码不能小于六位");
+            throw new RespException(RespError.CUSTOM_ERROR, "密码不能小于6位");
         }
         final String pwRegex = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$";
         if (!ReUtil.isMatch(pwRegex, input.getPassword())) {
