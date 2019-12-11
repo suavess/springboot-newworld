@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author Suave
@@ -30,34 +30,37 @@ public class UserController {
 
     /**
      * "/user"(POST)用户注册方法
+     *
      * @param input
      * @return
      */
     @PostMapping("")
-    public RespObj register(@RequestBody UserRegisterInput input){
+    public RespObj register(@RequestBody UserRegisterInput input) {
         userService.register(input);
         return RespObj.success();
     }
 
     /**
      * "/user"(GET)获取当前用户的信息
+     *
      * @return
      */
     @Auth
     @GetMapping("")
-    public RespObj info(HttpServletRequest request){
+    public RespObj info(HttpServletRequest request) {
         String email = request.getAttribute("email").toString();
         return RespObj.success(userService.info(email));
     }
 
     /**
-     * 更新用户信息
+     * "/user"(PUT)更新用户信息
+     *
      * @param input
      * @return
      */
     @Auth
     @PutMapping("")
-    public RespObj update(@RequestBody UserUpdateInput input,HttpServletRequest request){
+    public RespObj update(@RequestBody UserUpdateInput input, HttpServletRequest request) {
         String email = request.getAttribute("email").toString();
         input.setEmail(email);
         userService.update(input);
@@ -65,12 +68,27 @@ public class UserController {
     }
 
     /**
+     * "/user"(DELETE)用户退出登录
+     *
+     * @param request
+     * @return
+     */
+    @Auth
+    @DeleteMapping("")
+    public RespObj logout(HttpServletRequest request) {
+        String email = request.getAttribute("email").toString();
+        userService.logout(email);
+        return RespObj.success();
+    }
+
+    /**
      * "/user/login"(POST)用户登录方法
+     *
      * @param input
      * @return
      */
     @PostMapping("login")
-    public RespObj<UserLoginOutput> login(@RequestBody UserLoginInput input){
+    public RespObj<UserLoginOutput> login(@RequestBody UserLoginInput input) {
         return RespObj.success(userService.login(input));
     }
 

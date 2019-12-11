@@ -133,21 +133,40 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         queryWrapper.eq("email", email);
         info = userMapper.selectOne(queryWrapper);
         // 并存入redis
-        redisUtil.set(RedisKeyConst.USER_INFO.getKey() + email,info,expiration);
+        redisUtil.set(RedisKeyConst.USER_INFO.getKey() + email, info, expiration);
         BeanUtil.copyProperties(info, output);
         return output;
     }
 
+    /**
+     * 用户修改信息
+     *
+     * @param input
+     * @throws RespException
+     */
     @Override
     @Transactional(rollbackFor = {RespException.class})
     public void update(UserUpdateInput input) throws RespException {
         User user = new User();
-        BeanUtil.copyProperties(input,user);
+        BeanUtil.copyProperties(input, user);
         QueryWrapper<User> updateWrapper = new QueryWrapper<>();
-        updateWrapper.select("email",input.getEmail());
+        updateWrapper.select("email", input.getEmail());
         //更新数据库中用户信息参数
-        userMapper.update(user,updateWrapper);
+        userMapper.update(user, updateWrapper);
         //同时更新redis中的设置
-        redisUtil.set(RedisKeyConst.USER_INFO.getKey()+input.getEmail(),input);
+        redisUtil.set(RedisKeyConst.USER_INFO.getKey() + input.getEmail(), input);
+    }
+
+    /**
+     * 用户退出登录方法
+     *
+     * @param email
+     * @throws RespException
+     */
+    @Override
+    public void logout(String email) throws RespException {
+        // 清除redis中的token和个人信息
+        redisUtil.del(RedisKeyConst.USER_TOKEN + email);
+        redisUtil.del(RedisKeyConst.USER_INFO + email);
     }
 }

@@ -11,7 +11,7 @@ import com.suave.newworld.exception.RespException;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author Suave
@@ -20,6 +20,7 @@ import com.suave.newworld.exception.RespException;
 public interface UserService extends IService<User> {
     /**
      * 用户登陆接口
+     *
      * @param input
      * @return
      * @throws RespException
@@ -27,7 +28,16 @@ public interface UserService extends IService<User> {
     UserLoginOutput login(UserLoginInput input) throws RespException;
 
     /**
+     * 用户退出登录接口
+     *
+     * @param email
+     * @throws RespException
+     */
+    void logout(String email) throws RespException;
+
+    /**
      * 用户注册接口
+     *
      * @param input
      * @throws RespException
      */
@@ -35,6 +45,7 @@ public interface UserService extends IService<User> {
 
     /**
      * 通过email获取用户的信息
+     *
      * @param email
      * @return
      * @throws RespException
@@ -43,6 +54,7 @@ public interface UserService extends IService<User> {
 
     /**
      * 更新用户
+     *
      * @param input
      * @throws RespException
      */
