@@ -151,9 +151,9 @@
     <insert id="insertTagsByArticleId">
         insert into article_tags (article_id, tag_id)
         values
-        <foreach collection="tagList" item="tag">
+        <foreach collection="tagList" item="tag" separator =",">
             (
-            #{id}
+            #{id},
             #{tag.value}
             )
         </foreach>

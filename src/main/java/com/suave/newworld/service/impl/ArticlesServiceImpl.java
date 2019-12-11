@@ -200,6 +200,8 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> i
                 .setUpdatedAt(now)
                 .setUserId(userMapper.findIdByEmail(email));
         articlesMapper.insert(articles);
+        List<Integer> tagList = input.getTagList();
+        articlesMapper.insertTagsByArticleId(articles.getId(),tagList);
     }
 
     /**
