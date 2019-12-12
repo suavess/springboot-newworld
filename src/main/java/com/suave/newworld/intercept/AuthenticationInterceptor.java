@@ -63,6 +63,9 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         try {
             // 需要的权限
             String value = auth.value();
+            if (token == null){
+                throw new RespException(RespError.USER_UN_LOGIN);
+            }
             if (jwtTokenUtil.isTokenExpired(token)) {
                 throw new RespException(RespError.TOKEN_EXPIRED);
             }
@@ -85,9 +88,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 throw new RespException(RespError.TOKEN_ERROR);
             }
         } catch (Exception e) {
-            if (e instanceof RespException) {
-                throw new RespException(RespError.TOKEN_ERROR);
-            } else if (e instanceof ExpiredJwtException){
+            if (e instanceof ExpiredJwtException){
                 throw new RespException(RespError.TOKEN_EXPIRED);
             } else {
                 throw e;

@@ -4,10 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.suave.newworld.annotation.Auth;
 import com.suave.newworld.beans.Page;
 import com.suave.newworld.beans.RespObj;
-import com.suave.newworld.beans.input.ArticleUpdateInput;
-import com.suave.newworld.beans.input.ArticlesCreateInput;
-import com.suave.newworld.beans.input.ArticlesFeedListInput;
-import com.suave.newworld.beans.input.ArticlesListInput;
+import com.suave.newworld.beans.input.*;
 import com.suave.newworld.beans.output.ArticlesOutput;
 import com.suave.newworld.service.ArticlesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,15 +30,15 @@ public class ArticlesController {
      * @return
      */
     @GetMapping("")
-    public RespObj<Page<ArticlesOutput>> list(ArticlesListInput input,HttpServletRequest request) {
+    public RespObj<Page<ArticlesOutput>> list(ArticlesListInput input, HttpServletRequest request) {
         if (input == null) {
             input = new ArticlesListInput();
         }
-        String email = request.getAttribute("email").toString();
-        if (StrUtil.isEmpty(email)){
+        Object email = request.getAttribute("email");
+        if (email == null) {
             return RespObj.success(articlesService.articlesList(input));
         } else {
-            return RespObj.success(articlesService.articlesListWithLogin(input,email));
+            return RespObj.success(articlesService.articlesListWithLogin(input, email.toString()));
         }
     }
 
@@ -118,30 +115,30 @@ public class ArticlesController {
     /**
      * /articles/favorite"(POST)传Id收藏某一篇文章
      *
-     * @param id      文章id
+     * @param input
      * @param request
      * @return
      */
     @Auth
     @PostMapping("favorite")
-    public RespObj favorite(@RequestBody Integer id, HttpServletRequest request) {
+    public RespObj favorite(@RequestBody ArticlesFavoriteInput input, HttpServletRequest request) {
         String email = request.getAttribute("email").toString();
-        articlesService.favorite(id,email);
+        articlesService.favorite(input.getId(), email);
         return RespObj.success();
     }
 
     /**
      * /articles/favorite"(DELETE)传Id取消收藏某一篇文章
      *
-     * @param id      文章id
+     * @param input
      * @param request
      * @return
      */
     @Auth
     @DeleteMapping("favorite")
-    public RespObj unFavorite(@RequestBody Integer id, HttpServletRequest request) {
+    public RespObj unFavorite(@RequestBody ArticlesFavoriteInput input, HttpServletRequest request) {
         String email = request.getAttribute("email").toString();
-        articlesService.unFavorite(id,email);
+        articlesService.unFavorite(input.getId(), email);
         return RespObj.success();
     }
 }
