@@ -146,21 +146,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     @Transactional(rollbackFor = {RespException.class})
-    public void update(UserUpdateInput input) throws RespException {
-        User user = new User();
-        if (input.getPassword()!=null){
-            if (input.getPassword().length()<6){
-                throw new RespException(RespError.CUSTOM_ERROR,"密码不能少于6位！");
+    public void update(UserUpdateInput input, String email) throws RespException {
+        if (input.getPassword() != null && input.getPassword().length() != 0) {
+            if (input.getPassword().length() < 6) {
+                throw new RespException(RespError.CUSTOM_ERROR, "密码不能少于6位！");
             }
             input.setPassword(SecureUtil.md5(input.getPassword()));
         }
+        User user = new User();
         BeanUtil.copyProperties(input, user);
-        QueryWrapper<User> updateWrapper = new QueryWrapper<>();
-        updateWrapper.select("email", input.getEmail());
+        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("email",email);
         //更新数据库中用户信息参数
         userMapper.update(user, updateWrapper);
         //同时更新redis中的设置
-        redisUtil.set(RedisKeyConst.USER_INFO.getKey() + input.getEmail(), input);
+        redisUtil.set(RedisKeyConst.USER_INFO.getKey() + email, userMapper.selectOne(updateWrapper));
     }
 
     /**

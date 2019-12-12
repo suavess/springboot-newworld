@@ -13,5 +13,8 @@ import lombok.experimental.Accessors;
 public class ArticlesListInput extends Page {
     private String tag;
     private String author;
+    /**
+     * 被某个用户收藏
+     */
     private String favorited;
 }

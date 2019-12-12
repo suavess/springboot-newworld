@@ -85,9 +85,9 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             }
         } catch (Exception e) {
             if (e instanceof RespException) {
-                throw e;
-            } else {
                 throw new RespException(RespError.TOKEN_ERROR);
+            } else {
+                throw e;
             }
         }
     }

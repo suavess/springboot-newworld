@@ -56,7 +56,8 @@ public interface UserService extends IService<User> {
      * 更新用户
      *
      * @param input
+     * @param email
      * @throws RespException
      */
-    void update(UserUpdateInput input) throws RespException;
+    void update(UserUpdateInput input, String email) throws RespException;
 }
