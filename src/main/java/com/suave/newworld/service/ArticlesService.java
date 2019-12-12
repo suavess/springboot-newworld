@@ -30,6 +30,15 @@ public interface ArticlesService extends IService<Articles> {
     Page<ArticlesOutput> articlesList(ArticlesListInput input) throws RespException;
 
     /**
+     * 登录过后请求的接口，需要返回是否收藏该文章
+     * @param input
+     * @param email
+     * @return
+     * @throws RespException
+     */
+    Page<ArticlesOutput> articlesListWithLogin(ArticlesListInput input,String email) throws RespException;
+
+    /**
      * 分页获取所关注用户的文章
      *
      * @param input

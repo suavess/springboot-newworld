@@ -20,6 +20,16 @@ import java.util.List;
 public interface ArticlesMapper extends BaseMapper<Articles> {
 
     /**
+     * 判断某个用户是否关注了某篇文章
+     *
+     * @param uid
+     * @param aid
+     * @return
+     */
+    @Select("select count(1) from article_favorites where user_id=#{uid} and article_id=#{aid}")
+    Integer isFavorited(@Param("uid") Integer uid, @Param("aid") Integer aid);
+
+    /**
      * 通过tag名称找到tag的id
      *
      * @param tag

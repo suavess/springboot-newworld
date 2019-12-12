@@ -1,5 +1,6 @@
 package com.suave.newworld.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.suave.newworld.annotation.Auth;
 import com.suave.newworld.beans.Page;
 import com.suave.newworld.beans.RespObj;
@@ -32,11 +33,16 @@ public class ArticlesController {
      * @return
      */
     @GetMapping("")
-    public RespObj<Page<ArticlesOutput>> list(ArticlesListInput input) {
+    public RespObj<Page<ArticlesOutput>> list(ArticlesListInput input,HttpServletRequest request) {
         if (input == null) {
             input = new ArticlesListInput();
         }
-        return RespObj.success(articlesService.articlesList(input));
+        String email = request.getAttribute("email").toString();
+        if (StrUtil.isEmpty(email)){
+            return RespObj.success(articlesService.articlesList(input));
+        } else {
+            return RespObj.success(articlesService.articlesListWithLogin(input,email));
+        }
     }
 
     /**

@@ -8,6 +8,7 @@ import com.suave.newworld.exception.RespError;
 import com.suave.newworld.exception.RespException;
 import com.suave.newworld.utils.JwtTokenUtil;
 import com.suave.newworld.utils.RedisUtil;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -50,8 +51,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                     // 将用户email存入request
                     request.setAttribute("email", email);
                 }
-            } catch (Exception e) {
-                System.out.println("e = " + e);
+            } catch (ExpiredJwtException e) {
+                throw new RespException(RespError.TOKEN_EXPIRED);
             }
         }
         Auth auth = handlerMethod.getMethodAnnotation(Auth.class);
@@ -86,6 +87,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         } catch (Exception e) {
             if (e instanceof RespException) {
                 throw new RespException(RespError.TOKEN_ERROR);
+            } else if (e instanceof ExpiredJwtException){
+                throw new RespException(RespError.TOKEN_EXPIRED);
             } else {
                 throw e;
             }

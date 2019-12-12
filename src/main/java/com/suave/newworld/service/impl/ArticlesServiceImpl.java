@@ -98,6 +98,30 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> i
     }
 
     /**
+     * 加入是否收藏该文章的标注
+     * @param input
+     * @param email
+     * @return
+     * @throws RespException
+     */
+    @Override
+    public Page<ArticlesOutput> articlesListWithLogin(ArticlesListInput input, String email) throws RespException {
+        // 用户id
+        Integer uid = userMapper.findIdByEmail(email);
+        Page<ArticlesOutput> page = this.articlesList(input);
+        List<ArticlesOutput> rows = page.getRows();
+        rows.forEach(row->{
+            Integer tmp = articlesMapper.isFavorited(uid, row.getId());
+            if (tmp == 0) {
+                row.setFavorited(false);
+            } else {
+                row.setFavorited(true);
+            }
+        });
+        return page.setRows(rows);
+    }
+
+    /**
      * 查询关注用户的文章列表
      *
      * @param input
