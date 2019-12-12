@@ -84,6 +84,11 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> i
         Integer total = articlesMapper.articlesCount(tag, author, favorited);
         // 文章列表
         List<ArticlesOutput> list = articlesMapper.findArticlesList(offset, limit, tag, author, favorited);
+        // 每篇文章的标签列表
+        list.forEach(item->{
+            Integer id = item.getId();
+            item.setTagList(articlesMapper.findTagListByArticleId(id));
+        });
         Page<ArticlesOutput> articlesListOutput = new Page<>();
         articlesListOutput.setPage(input.getPage());
         articlesListOutput.setSize(input.getSize());
@@ -110,7 +115,11 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> i
         // 满足条件的文章总数量
         Integer total = articlesMapper.articlesCountByFeed(id);
         List<ArticlesOutput> articlesFeedList = articlesMapper.findArticlesFeedList(offset, limit, id);
-
+        // 给每篇文章添加标签列表
+        articlesFeedList.forEach(item->{
+            Integer aid = item.getId();
+            item.setTagList(articlesMapper.findTagListByArticleId(aid));
+        });
         Page<ArticlesOutput> page = new Page<>();
         page.setPage(input.getPage()).setSize(input.getSize()).setTotal(total).setRows(articlesFeedList);
         return page;

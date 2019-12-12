@@ -12,6 +12,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class Author {
+    private Integer id;
     private String username;
     private String bio;
     private String image;

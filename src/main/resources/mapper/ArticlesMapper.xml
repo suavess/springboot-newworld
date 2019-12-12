@@ -58,6 +58,7 @@
         <result property="updatedAt" column="updated_at"/>
         <result property="favoritesCount" column="favorites_count"/>
         <association property="author" javaType="com.suave.newworld.beans.output.Author">
+            <result property="id" column="uid"/>
             <result property="username" column="author_username"/>
             <result property="bio" column="author_bio"/>
             <result property="image" column="author_image"/>
@@ -68,15 +69,14 @@
         </collection>
     </resultMap>
     <select id="findArticlesList" resultMap="ArticlesOutput">
-        select
+        select DISTINCT
         a.id,
         a.title,
         a.description,
         a.body,
         a.created_at,
         a.updated_at,
-        tags.id as tid,
-        tags.name as t_name,
+        u.id as uid,
         u.username as author_username,
         u.bio as author_bio,
         u.image as author_image,
@@ -86,7 +86,7 @@
         left join article_tags t on a.id = t.article_id
         left join tags on t.tag_id = tags.id
         left join users as u on u.id = a.user_id
-        left join article_favorites af on a.user_id = af.user_id
+        left join article_favorites af on a.id = af.article_id
         where
         1 = 1
         <if test="author != null">
@@ -98,6 +98,7 @@
         <if test="favorited != null">
             and af.user_id = #{favorited}
         </if>
+        order by a.updated_at desc
         limit #{offset},#{limit}
     </select>
 
@@ -109,19 +110,18 @@
         a.body,
         a.created_at,
         a.updated_at,
-        tags.name as tag_list,
+        u.id as uid,
         u.username as author_username,
         u.bio as author_bio,
         u.image as author_image,
         (select count(1) from article_favorites af where af.article_id = a.id) as favorites_count
         from
         articles as a
-        left join article_tags t on a.id = t.article_id
-        left join tags on t.tag_id = tags.id
         left join users as u on u.id = a.user_id
-        left join article_favorites af on a.user_id = af.user_id
+        left join article_favorites af on a.id = af.article_id
         where
         u.id in (SELECT follow_id from follows where user_id = #{id})
+        order by a.updated_at desc
         limit #{offset},#{limit}
     </select>
 
@@ -133,7 +133,8 @@
         a.body,
         a.created_at,
         a.updated_at,
-        tags.name as tag_list,
+        tags.name as t_name,
+        tags.id as tid,
         u.username as author_username,
         u.bio as author_bio,
         u.image as author_image,
@@ -146,7 +147,6 @@
         left join article_favorites af on a.user_id = af.user_id
         where
         a.id = #{id}
-        limit 1
     </select>
     <insert id="insertTagsByArticleId">
         insert into article_tags (article_id, tag_id)
@@ -165,7 +165,21 @@
     <insert id="insertFavoriteArticle">
         insert into article_favorites values (#{aid},#{uid})
     </insert>
+
     <delete id="delFavoriteArticle">
         delete from article_favorites where user_id = #{uid} and article_id=#{aid}
     </delete>
+
+    <select id="findTagListByArticleId" resultType="com.suave.newworld.beans.Tags">
+        select
+            t.id,t.name
+        from
+            tags t
+        left join
+            article_tags a
+        on
+            t.id = a.tag_id
+        where
+            a.article_id = #{id}
+    </select>
 </mapper>

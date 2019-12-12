@@ -2,6 +2,7 @@ spring:
   datasource:
     druid:
       url: jdbc:mysql://47.98.172.169:3306/new_world?serverTimezone=GMT%2B8
+#      url: jdbc:mysql://localhost:3306/new_world?serverTimezone=GMT%2B8
       username: root
       password: 123456
   redis:

@@ -32,7 +32,7 @@ public class ArticlesController {
      * @return
      */
     @GetMapping("")
-    public RespObj<Page<ArticlesOutput>> list(@RequestBody(required = false) ArticlesListInput input) {
+    public RespObj<Page<ArticlesOutput>> list(ArticlesListInput input) {
         if (input == null) {
             input = new ArticlesListInput();
         }
@@ -62,7 +62,7 @@ public class ArticlesController {
      */
     @Auth
     @GetMapping("feed")
-    public RespObj<Page<ArticlesOutput>> feedList(@RequestBody(required = false) ArticlesFeedListInput input, HttpServletRequest request) {
+    public RespObj<Page<ArticlesOutput>> feedList(ArticlesFeedListInput input, HttpServletRequest request) {
         String email = request.getAttribute("email").toString();
         input.setEmail(email);
         return RespObj.success(articlesService.articlesFeedList(input));

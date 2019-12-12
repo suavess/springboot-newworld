@@ -2,6 +2,7 @@ package com.suave.newworld.dao;
 
 import com.suave.newworld.beans.Articles;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.suave.newworld.beans.Tags;
 import com.suave.newworld.beans.output.ArticlesOutput;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -26,6 +27,14 @@ public interface ArticlesMapper extends BaseMapper<Articles> {
      */
     @Select("select id from tags where tags.name = #{tag}")
     Integer findTagIdByName(@Param("tag") String tag);
+
+    /**
+     * 通过文章id查找taglist
+     *
+     * @param id
+     * @return
+     */
+    List<Tags> findTagListByArticleId(@Param("id") Integer id);
 
     /**
      * 查询文章数量
