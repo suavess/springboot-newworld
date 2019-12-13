@@ -25,6 +25,7 @@
         <result property="updatedAt" column="updated_at" />
         <association property="author" javaType="com.suave.newworld.beans.output.Author">
             <result property="username" column="author_username"/>
+            <result property="id" column="author_id"/>
             <result property="bio" column="author_bio"/>
             <result property="image" column="author_image"/>
         </association>
@@ -33,7 +34,7 @@
     <select id="findCommentsByArticleId" resultMap="CommentsOutput">
         select
             c.id, c.body, c.created_at, c.updated_at,
-            u.username as author_username,u.bio as author_bio,u.image as author_image
+            u.username as author_username,u.bio as author_bio,u.image as author_image,u.id as author_id
         from
             comments as c
         left join
@@ -41,7 +42,8 @@
         on
             c.user_id = u.id
         where
-            c.user_id = #{id}
+            c.article_id = #{id}
+        order by updated_at desc
     </select>
 
 </mapper>

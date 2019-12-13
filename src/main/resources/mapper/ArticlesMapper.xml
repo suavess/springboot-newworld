@@ -135,6 +135,7 @@
         a.updated_at,
         tags.name as t_name,
         tags.id as tid,
+        u.id as uid,
         u.username as author_username,
         u.bio as author_bio,
         u.image as author_image,

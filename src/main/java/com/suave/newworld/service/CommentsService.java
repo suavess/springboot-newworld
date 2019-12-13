@@ -36,8 +36,6 @@ public interface CommentsService extends IService<Comments> {
 
     /**
      * 删除文章中的某一条评论
-     * @param aid 文章id
-     * @param cid 评论id
      * @param email  用户邮箱
      * @throws RespException
      */

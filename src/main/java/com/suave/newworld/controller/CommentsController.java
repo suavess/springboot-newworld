@@ -4,6 +4,7 @@ package com.suave.newworld.controller;
 import com.suave.newworld.annotation.Auth;
 import com.suave.newworld.beans.RespObj;
 import com.suave.newworld.beans.input.CommentsCreateInput;
+import com.suave.newworld.beans.input.CommentsDeleteInput;
 import com.suave.newworld.beans.output.CommentsOutput;
 import com.suave.newworld.service.CommentsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,18 +55,16 @@ public class CommentsController {
     }
 
     /**
-     * "/comments/{aid}/{cid}"(GET)返回某一篇文章的某一条评论
-     * @param aid     文章id
-     * @param cid     评论id
+     * "/comments"(Delete)返回某一篇文章的某一条评论
+     * @param input
      * @param request
      * @return
      */
     @Auth
-    @DeleteMapping("{aid}/{cid}")
-    public RespObj del(@PathVariable Integer aid, @PathVariable Integer cid, HttpServletRequest request) {
+    @DeleteMapping("")
+    public RespObj del(@RequestBody CommentsDeleteInput input, HttpServletRequest request) {
         String email = request.getAttribute("email").toString();
-        commentsService.del(aid, cid, email);
+        commentsService.del(input.getAid(),input.getCid(), email);
         return RespObj.success();
     }
-
 }

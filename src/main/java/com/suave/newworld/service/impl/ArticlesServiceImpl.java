@@ -85,7 +85,7 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> i
         // 文章列表
         List<ArticlesOutput> list = articlesMapper.findArticlesList(offset, limit, tag, author, favorited);
         // 每篇文章的标签列表
-        list.forEach(item->{
+        list.forEach(item -> {
             Integer id = item.getId();
             item.setTagList(articlesMapper.findTagListByArticleId(id));
         });
@@ -99,6 +99,7 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> i
 
     /**
      * 加入是否收藏该文章的标注
+     *
      * @param input
      * @param email
      * @return
@@ -110,7 +111,7 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> i
         Integer uid = userMapper.findIdByEmail(email);
         Page<ArticlesOutput> page = this.articlesList(input);
         List<ArticlesOutput> rows = page.getRows();
-        rows.forEach(row->{
+        rows.forEach(row -> {
             Integer tmp = articlesMapper.isFavorited(uid, row.getId());
             if (tmp == 0) {
                 row.setFavorited(false);
@@ -140,7 +141,7 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> i
         Integer total = articlesMapper.articlesCountByFeed(id);
         List<ArticlesOutput> articlesFeedList = articlesMapper.findArticlesFeedList(offset, limit, id);
         // 给每篇文章添加标签列表
-        articlesFeedList.forEach(item->{
+        articlesFeedList.forEach(item -> {
             Integer aid = item.getId();
             item.setTagList(articlesMapper.findTagListByArticleId(aid));
         });
@@ -165,7 +166,7 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> i
     /**
      * 通过id更新文章
      *
-     * @param id 文章id
+     * @param id    文章id
      * @param input
      * @param email 用户email
      * @return
@@ -178,24 +179,24 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> i
         Integer userId = userMapper.findIdByEmail(email);
         Articles articleById = articlesMapper.selectById(id);
         // 判断该文章的userId是否和当前用户的id相同
-        if (articleById.getUserId().equals(userId)) {
-            throw new RespException(RespError.CUSTOM_ERROR,"您没有权限修改该文章！");
+        if (!articleById.getUserId().equals(userId)) {
+            throw new RespException(RespError.CUSTOM_ERROR, "您没有权限修改该文章！");
         }
         // 更新文章的标签
         List<Integer> tagList = input.getTagList();
         List<Tags> tags = tagsMapper.selectList(null);
         List<Integer> tmp = new ArrayList<>();
-        tags.forEach(tag->{
+        tags.forEach(tag -> {
             tmp.add(tag.getId());
         });
-        if (!tmp.containsAll(tagList)){
-            throw new RespException(RespError.CUSTOM_ERROR,"标签列表无效！");
+        if (!tmp.containsAll(tagList)) {
+            throw new RespException(RespError.CUSTOM_ERROR, "标签列表无效！");
         }
         articlesMapper.delTagsByArticleId(id);
-        articlesMapper.insertTagsByArticleId(id,tagList);
+        articlesMapper.insertTagsByArticleId(id, tagList);
         // 更新文章
         Articles article = new Articles();
-        BeanUtil.copyProperties(input,article);
+        BeanUtil.copyProperties(input, article);
         article.setId(id);
         articlesMapper.updateById(article);
         // 返回更新后的文章，同时会更新缓存中的该文章
@@ -215,17 +216,17 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> i
     @CacheEvict(value = {"ArticlesList", "ArticlesFeedList"}, allEntries = true)
     public void createArticle(ArticlesCreateInput input, String email) throws RespException {
         Articles articles = new Articles();
-        if (StrUtil.isEmpty(input.getTitle())){
-            throw new RespException(RespError.CUSTOM_ERROR,"请输入文章标题");
+        if (StrUtil.isEmpty(input.getTitle())) {
+            throw new RespException(RespError.CUSTOM_ERROR, "请输入文章标题");
         }
-        if (StrUtil.isEmpty(input.getDescription())){
-            throw new RespException(RespError.CUSTOM_ERROR,"请输入文章描述");
+        if (StrUtil.isEmpty(input.getDescription())) {
+            throw new RespException(RespError.CUSTOM_ERROR, "请输入文章描述");
         }
-        if (StrUtil.isEmpty(input.getBody())){
-            throw new RespException(RespError.CUSTOM_ERROR,"请输入文章内容");
+        if (StrUtil.isEmpty(input.getBody())) {
+            throw new RespException(RespError.CUSTOM_ERROR, "请输入文章内容");
         }
-        if (input.getBody().length()==0){
-            throw new RespException(RespError.CUSTOM_ERROR,"请至少选择一个文章标签");
+        if (input.getBody().length() == 0) {
+            throw new RespException(RespError.CUSTOM_ERROR, "请至少选择一个文章标签");
         }
         BeanUtil.copyProperties(input, articles);
         DateTime now = DateTime.now();
@@ -234,23 +235,24 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> i
                 .setUserId(userMapper.findIdByEmail(email));
         articlesMapper.insert(articles);
         List<Integer> tagList = input.getTagList();
-        articlesMapper.insertTagsByArticleId(articles.getId(),tagList);
+        articlesMapper.insertTagsByArticleId(articles.getId(), tagList);
     }
 
     /**
      * 通过id删除文章
+     *
      * @param id
      * @param email
      * @throws RespException
      */
     @Override
     @Transactional(rollbackFor = {Exception.class})
-    @CacheEvict(value = "ArticleById", key = "#p0")
-    public void deleteArticleById(Integer id,String email) throws RespException {
+    @CacheEvict(value = {"ArticleById", "ArticleComments"}, key = "#p0")
+    public void deleteArticleById(Integer id, String email) throws RespException {
         Integer userId = userMapper.findIdByEmail(email);
         Articles article = articlesMapper.selectById(id);
-        if (!article.getUserId().equals(userId)){
-            throw new RespException(RespError.CUSTOM_ERROR,"您没有权限删除该文章！");
+        if (!article.getUserId().equals(userId)) {
+            throw new RespException(RespError.CUSTOM_ERROR, "您没有权限删除该文章！");
         }
         articlesMapper.delTagsByArticleId(id);
         articlesMapper.deleteById(id);
@@ -261,7 +263,7 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> i
     @CacheEvict(value = {"ArticlesList", "ArticlesFeedList"}, allEntries = true)
     public ArticlesOutput favorite(Integer aid, String email) throws RespException {
         Integer uid = userMapper.findIdByEmail(email);
-        articlesMapper.insertFavoriteArticle(uid,aid);
+        articlesMapper.insertFavoriteArticle(uid, aid);
         ArticlesOutput output = articlesMapper.findArticleById(aid);
         return output;
     }
@@ -271,7 +273,7 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> i
     @CacheEvict(value = {"ArticlesList", "ArticlesFeedList"}, allEntries = true)
     public ArticlesOutput unFavorite(Integer aid, String email) throws RespException {
         Integer uid = userMapper.findIdByEmail(email);
-        articlesMapper.delFavoriteArticle(uid,aid);
+        articlesMapper.delFavoriteArticle(uid, aid);
         ArticlesOutput output = articlesMapper.findArticleById(aid);
         return output;
     }

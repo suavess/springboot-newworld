@@ -5,6 +5,7 @@ import com.suave.newworld.beans.input.ProfileGetInput;
 import com.suave.newworld.beans.output.ProfileGetOutput;
 import com.suave.newworld.dao.ProfileMapper;
 import com.suave.newworld.dao.UserMapper;
+import com.suave.newworld.exception.RespError;
 import com.suave.newworld.exception.RespException;
 import com.suave.newworld.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,8 +54,10 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional(rollbackFor = {Exception.class})
     public void follow(ProfileFollowInput input, String email) throws RespException {
         Integer myId = userMapper.findIdByEmail(email);
-        Integer yourId = userMapper.findIdByEmail(input.getEmail());
-        profileMapper.follow(myId,yourId);
+        if (myId.equals(input.getId())){
+            throw new RespException(RespError.CUSTOM_ERROR,"不能关注自己！");
+        }
+        profileMapper.follow(myId,input.getId());
     }
 
     /**
@@ -67,7 +70,6 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional(rollbackFor = {Exception.class})
     public void unFollow(ProfileFollowInput input, String email) throws RespException {
         Integer myId = userMapper.findIdByEmail(email);
-        Integer yourId = userMapper.findIdByEmail(input.getEmail());
-        profileMapper.unFollow(myId,yourId);
+        profileMapper.unFollow(myId,input.getId());
     }
 }

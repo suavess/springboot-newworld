@@ -5,10 +5,11 @@ import lombok.experimental.Accessors;
 
 /**
  * @author: Suave
- * @date: 2019-12-07 18:25
+ * @date: 2019-12-13 16:16
  */
 @Data
 @Accessors(chain = true)
-public class ProfileFollowInput {
-    private Integer id;
+public class CommentsDeleteInput {
+    private Integer aid;
+    private Integer cid;
 }
