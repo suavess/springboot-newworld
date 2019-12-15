@@ -92,7 +92,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (input.getUsername().length() > 15) {
             throw new RespException(RespError.CUSTOM_ERROR, "用户名不能大于15位");
         }
-        final String emailRegex = "^([a-zA-Z0-9]*[-_]?[a-zA-Z0-9]+)*@([a-zA-Z0-9]*[-_]?[a-zA-Z0-9]+)+[\\.][A-Za-z]{2,3}([\\.][A-Za-z]{2})?$";
+        final String emailRegex = "^\\s*\\w+(?:\\.{0,1}[\\w-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\\.[a-zA-Z]+\\s*$";
         if (!ReUtil.isMatch(emailRegex, input.getEmail())) {
             throw new RespException(RespError.CUSTOM_ERROR, "邮箱格式不正确");
         }
