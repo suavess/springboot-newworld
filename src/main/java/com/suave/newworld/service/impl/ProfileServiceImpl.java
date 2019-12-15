@@ -8,6 +8,7 @@ import com.suave.newworld.exception.RespError;
 import com.suave.newworld.exception.RespException;
 import com.suave.newworld.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,6 +51,7 @@ public class ProfileServiceImpl implements ProfileService {
      */
     @Override
     @Transactional(rollbackFor = {Exception.class})
+    @CacheEvict(value = "ArticlesFeedList", key = "#email")
     public void follow(ProfileFollowInput input, String email) throws RespException {
         Integer myId = userMapper.findIdByEmail(email);
         if (myId.equals(input.getId())){
@@ -66,6 +68,7 @@ public class ProfileServiceImpl implements ProfileService {
      */
     @Override
     @Transactional(rollbackFor = {Exception.class})
+    @CacheEvict(value = "ArticlesFeedList", key = "#email")
     public void unFollow(ProfileFollowInput input, String email) throws RespException {
         Integer myId = userMapper.findIdByEmail(email);
         profileMapper.unFollow(myId,input.getId());
