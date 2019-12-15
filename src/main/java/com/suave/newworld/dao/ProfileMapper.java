@@ -1,6 +1,5 @@
 package com.suave.newworld.dao;
 
-import com.suave.newworld.beans.input.ProfileGetInput;
 import com.suave.newworld.beans.output.ProfileGetOutput;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
@@ -14,22 +13,22 @@ import org.apache.ibatis.annotations.Select;
 public interface ProfileMapper {
     /**
      * 通过email获取用户信息
-     * @param email
+     * @param id
      * @return
      */
-    @Select("select * from users where email = #{email}")
-    ProfileGetOutput get(String email);
+    @Select("select * from users where id = #{id}")
+    ProfileGetOutput get(Integer id);
 
     /**
      * 获取用户关注关系
      * @param myEmail
-     * @param yourEmail
+     * @param yourId
      * @return
      */
     @Select("SELECT count( 1 ) FROM `follows` as f " +
             "WHERE f.user_id = (SELECT id FROM users where email=#{myEmail}) " +
-            "and f.follow_id = (SELECT id FROM users where email=#{yourEmail})")
-    Integer getFollow(String myEmail,String yourEmail);
+            "and f.follow_id = (SELECT id FROM users where id=#{yourId})")
+    Integer getFollow(String myEmail,Integer yourId);
 
     /**
      * 关注某个用户
@@ -44,6 +43,6 @@ public interface ProfileMapper {
      * @param myId
      * @param yourId
      */
-    @Delete("DELETE from follows where user_id=#{myid} and follow_id=#{yourId}")
+    @Delete("DELETE from follows where user_id=#{myId} and follow_id=#{yourId}")
     void unFollow(Integer myId,Integer yourId);
 }

@@ -1,7 +1,6 @@
 package com.suave.newworld.service;
 
 import com.suave.newworld.beans.input.ProfileFollowInput;
-import com.suave.newworld.beans.input.ProfileGetInput;
 import com.suave.newworld.beans.output.ProfileGetOutput;
 import com.suave.newworld.exception.RespException;
 
@@ -13,12 +12,12 @@ import com.suave.newworld.exception.RespException;
 public interface ProfileService {
     /**
      * 获取目标用户相关信息
-     * @param input
+     * @param id
      * @param email
      * @return
      * @throws RespException
      */
-    ProfileGetOutput get(ProfileGetInput input,String email) throws RespException;
+    ProfileGetOutput get(Integer id,String email) throws RespException;
 
     /**
      * 关注用户

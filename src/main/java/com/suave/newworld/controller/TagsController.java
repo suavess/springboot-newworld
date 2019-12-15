@@ -5,6 +5,7 @@ import com.suave.newworld.beans.RespObj;
 import com.suave.newworld.beans.Tags;
 import com.suave.newworld.service.TagsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -28,6 +29,7 @@ public class TagsController {
     TagsService tagsService;
 
     @GetMapping("")
+    @Cacheable(value = "tagsList")
     public RespObj<List<Tags>> list(){
         return RespObj.success(tagsService.list());
     }

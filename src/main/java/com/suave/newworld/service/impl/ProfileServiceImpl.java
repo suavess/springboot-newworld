@@ -1,7 +1,6 @@
 package com.suave.newworld.service.impl;
 
 import com.suave.newworld.beans.input.ProfileFollowInput;
-import com.suave.newworld.beans.input.ProfileGetInput;
 import com.suave.newworld.beans.output.ProfileGetOutput;
 import com.suave.newworld.dao.ProfileMapper;
 import com.suave.newworld.dao.UserMapper;
@@ -27,16 +26,15 @@ public class ProfileServiceImpl implements ProfileService {
 
     /**
      * 获取目标用户信息
-     * @param input
+     * @param id
      * @return
      * @throws RespException
      */
     @Override
-    public ProfileGetOutput get(ProfileGetInput input,String email) throws RespException {
-        String youEmail = input.getEmail();
-        ProfileGetOutput profileGetOutput = profileMapper.get(youEmail);
+    public ProfileGetOutput get(Integer id,String email) throws RespException {
+        ProfileGetOutput profileGetOutput = profileMapper.get(id);
         if (email != null){
-            Integer follow = profileMapper.getFollow(email, youEmail);
+            Integer follow = profileMapper.getFollow(email, id);
             if (follow==1){
                 profileGetOutput.setFollowing(true);
             }

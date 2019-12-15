@@ -10,6 +10,8 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class ProfileGetOutput {
+    private Integer id;
+    private String email;
     private String username;
     private String bio;
     private String image;
