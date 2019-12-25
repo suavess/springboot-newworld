@@ -55,13 +55,10 @@ class NewWorldApplicationTests {
         System.out.println("tmp = " + tmp);
     }
 
-//    @Test
+    @Test
     public void testJwt(){
-        User user = new User();
-        user.setUsername("1132888093");
-        String token = jwtTokenUtil.createToken(user);
-        System.out.println("token = " + token);
-        System.out.println("jwtTokenUtil.getUsernameFromToken(token) = " + jwtTokenUtil.getEmailFromToken(token));
+        String token = "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzdWF2ZSIsInN1YiI6IjEyMzQ1NkBxcS5jb20iLCJleHAiOjE1NzcxNzk0ODcsImlhdCI6MTU3NzE3NTg4NywiZW1haWwiOiIxMjM0NTZAcXEuY29tIn0.DujXAB2Faw8wWr5jO3L3-VGjc0bvyzJ5I9SQboXDTiYGnANuzhWLED93TtQMasKm-gmf7RIjePgiAiy5E5iZ9Q";
+        System.out.println(jwtTokenUtil.isTokenExpired(token));
     }
 
     //    @Test

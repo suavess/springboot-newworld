@@ -78,7 +78,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             // 取出redis中的数据
             Object info = redisUtil.get(RedisKeyConst.USER_INFO.getKey() + email);
             User user = (User) info;
-            // 管理员权限允许访问所有接口
+            // 管理员权限允许访问所有接口，直接放行
             if (Const.RoleType.ADMIN.equals(user.getRole())) {
                 return true;
             }

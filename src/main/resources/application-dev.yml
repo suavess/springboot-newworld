@@ -20,7 +20,7 @@ spring:
   cache:
     type: redis
 server:
-  port: 8080
+  port: 9000
 logging:
   level:
     com.suave.newworld.dao: debug

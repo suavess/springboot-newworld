@@ -130,7 +130,7 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> i
      * @throws RespException
      */
     @Override
-    @Cacheable(value = "ArticlesFeedList")
+    @Cacheable(value = "ArticlesFeedList",key = "#input.email")
     public Page<ArticlesOutput> articlesFeedList(ArticlesFeedListInput input) throws RespException {
         Integer id = userMapper.findIdByEmail(input.getEmail());
         // 查询多少条数据
