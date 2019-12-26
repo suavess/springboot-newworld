@@ -6,18 +6,17 @@ import lombok.experimental.Accessors;
 
 /**
  * @author: Suave
- * @date: 2019-12-09 9:22
+ * @date: 2019-12-25 10:22
  */
 @Data
 @Accessors(chain = true)
-public class ArticlesListInput extends Page {
-    private String tag;
+public class AdminArticlesListInput extends Page {
     /**
-     * 文章作者的email
+     * 文章的标签
+     */
+    private String tags;
+    /**
+     * 文章作者的username
      */
     private String author;
-    /**
-     * 被某个用户收藏
-     */
-    private String favorited;
 }

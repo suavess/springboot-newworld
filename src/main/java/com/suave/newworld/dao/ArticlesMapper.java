@@ -3,6 +3,7 @@ package com.suave.newworld.dao;
 import com.suave.newworld.beans.Articles;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.suave.newworld.beans.Tags;
+import com.suave.newworld.beans.input.AdminArticlesListInput;
 import com.suave.newworld.beans.output.ArticlesOutput;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -125,4 +126,32 @@ public interface ArticlesMapper extends BaseMapper<Articles> {
      * @param aid 文章id
      */
     void delFavoriteArticle(@Param("uid") Integer uid, @Param("aid") Integer aid);
+
+    /**
+     * 管理员端获取文章列表，通过作者username和标签name筛选，分页
+     *
+     * @param author
+     * @param tags
+     * @param limit
+     * @param offset
+     * @return
+     */
+    List<ArticlesOutput> adminArticleList(
+            @Param("author") String author,
+            @Param("tags") String tags,
+            @Param("limit") Integer limit,
+            @Param("offset") Integer offset
+    );
+
+    /**
+     * 管理员端获取文章数量，通过作者username和标签name筛选
+     *
+     * @param author
+     * @param tags
+     * @return
+     */
+    Integer adminArticleListCount(
+            @Param("author") String author,
+            @Param("tags") String tags
+    );
 }

@@ -152,7 +152,7 @@
     <insert id="insertTagsByArticleId">
         insert into article_tags (article_id, tag_id)
         values
-        <foreach collection="tagList" item="tag" separator =",">
+        <foreach collection="tagList" item="tag" separator=",">
             (
             #{id},
             #{tag.value}
@@ -173,14 +173,62 @@
 
     <select id="findTagListByArticleId" resultType="com.suave.newworld.beans.Tags">
         select
-            t.id,t.name
+        t.id,t.name
         from
-            tags t
+        tags t
         left join
-            article_tags a
+        article_tags a
         on
-            t.id = a.tag_id
+        t.id = a.tag_id
         where
-            a.article_id = #{id}
+        a.article_id = #{id}
+    </select>
+
+    <select id="adminArticleList" resultMap="ArticlesOutput">
+        select DISTINCT
+        a.id,
+        a.title,
+        a.description,
+        a.body,
+        a.created_at,
+        a.updated_at,
+        u.id as uid,
+        u.username as author_username,
+        u.bio as author_bio,
+        u.image as author_image,
+        (select count(1) from article_favorites af where af.article_id = a.id) as favorites_count
+        from
+        articles as a
+        left join article_tags t on a.id = t.article_id
+        left join tags on t.tag_id = tags.id
+        left join users as u on u.id = a.user_id
+        left join article_favorites af on a.id = af.article_id
+        where
+        1 = 1
+        <if test="author != null">
+            and u.username like '%#{author}%'
+        </if>
+        <if test="tags != null">
+            and tags.name like '%#{tags}%'
+        </if>
+        order by a.updated_at desc
+        limit #{offset},#{limit}
+    </select>
+    <select id="adminArticleListCount" resultType="java.lang.Integer">
+        select
+        count(1)
+        from
+        articles
+        where
+        1 = 1
+        <if test="author != null">
+            and articles.user_id in (select id from users where users.username like '%#{author}%')
+        </if>
+        <if test="tags != null">
+            and articles.id in
+            (select article_id from article_tags where tag_id in
+            (select id from tags where tags.name like '%#{tags}%')
+            )
+        </if>
     </select>
 </mapper>
