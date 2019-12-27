@@ -1,5 +1,6 @@
 package com.suave.newworld.controller.admin;
 
+import com.suave.newworld.annotation.Auth;
 import com.suave.newworld.beans.Page;
 import com.suave.newworld.beans.RespObj;
 import com.suave.newworld.beans.input.AdminArticlesListInput;
@@ -29,6 +30,7 @@ public class AdminArticleController {
      * @param input
      * @return
      */
+    @Auth("ADMIN")
     @GetMapping("")
     public RespObj<Page<ArticlesOutput>> list(AdminArticlesListInput input) {
         return RespObj.success(adminArticleService.list(input));
@@ -40,6 +42,7 @@ public class AdminArticleController {
      * @param input
      * @return
      */
+    @Auth("ADMIN")
     @DeleteMapping("")
     public RespObj del(@RequestBody Map<String, Object> input) {
         adminArticleService.delById((Integer) input.get("id"));

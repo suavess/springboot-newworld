@@ -1,5 +1,6 @@
 package com.suave.newworld.controller.admin;
 
+import com.suave.newworld.annotation.Auth;
 import com.suave.newworld.beans.Page;
 import com.suave.newworld.beans.RespObj;
 import com.suave.newworld.beans.Tags;
@@ -32,6 +33,7 @@ public class AdminTagsController {
      * @param input
      * @return
      */
+    @Auth("ADMIN")
     @GetMapping("")
     public RespObj<Page<Tags>> list(Page input) {
         return RespObj.success(adminTagsService.list(input));
@@ -43,6 +45,7 @@ public class AdminTagsController {
      * @param input
      * @return
      */
+    @Auth("ADMIN")
     @DeleteMapping("")
     public RespObj del(@RequestBody Map<String,Integer> input) {
         adminTagsService.del(input.get("id"));
@@ -55,6 +58,7 @@ public class AdminTagsController {
      * @param input
      * @return
      */
+    @Auth("ADMIN")
     @PutMapping("")
     public RespObj update(@RequestBody Tags input) {
         tagsService.updateById(input);
@@ -67,6 +71,7 @@ public class AdminTagsController {
      * @param input
      * @return
      */
+    @Auth("ADMIN")
     @PostMapping("")
     public RespObj add(@RequestBody Tags input) {
         tagsService.save(input);

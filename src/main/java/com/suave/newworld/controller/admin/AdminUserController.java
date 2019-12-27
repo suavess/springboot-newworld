@@ -1,6 +1,7 @@
 package com.suave.newworld.controller.admin;
 
 import cn.hutool.crypto.SecureUtil;
+import com.suave.newworld.annotation.Auth;
 import com.suave.newworld.beans.Page;
 import com.suave.newworld.beans.RespObj;
 import com.suave.newworld.beans.User;
@@ -34,6 +35,7 @@ public class AdminUserController {
      * @param input
      * @return
      */
+    @Auth("ADMIN")
     @GetMapping("")
     public RespObj<Page<User>> list(AdminUserInput input) {
         return RespObj.success(adminUserService.list(input));
@@ -45,6 +47,7 @@ public class AdminUserController {
      * @param input
      * @return
      */
+    @Auth("ADMIN")
     @DeleteMapping("")
     public RespObj del(@RequestBody Map<String,Integer> input) {
         userService.removeById(input.get("id"));
@@ -57,6 +60,7 @@ public class AdminUserController {
      * @param input
      * @return
      */
+    @Auth("ADMIN")
     @PutMapping("")
     public RespObj update(@RequestBody User input) {
         userService.updateById(input);
@@ -69,6 +73,7 @@ public class AdminUserController {
      * @param input
      * @return
      */
+    @Auth("ADMIN")
     @PutMapping("reset")
     public RespObj reset(@RequestBody User input) {
         input.setPassword(SecureUtil.md5("123456"));

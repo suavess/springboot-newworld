@@ -3,6 +3,7 @@ package com.suave.newworld.controller.admin;
 import com.suave.newworld.annotation.Auth;
 import com.suave.newworld.beans.RespObj;
 import com.suave.newworld.beans.input.UserLoginInput;
+import com.suave.newworld.beans.output.AdminAnalyzeOutput;
 import com.suave.newworld.beans.output.AdminCountOutput;
 import com.suave.newworld.beans.output.UserLoginOutput;
 import com.suave.newworld.service.AdminService;
@@ -70,5 +71,16 @@ public class AdminController {
     @GetMapping("count")
     public RespObj<AdminCountOutput> count() {
         return RespObj.success(adminService.countAll());
+    }
+
+    /**
+     * "/admin/analyze"(GET)获取用户总数、文章总数和标签总数
+     *
+     * @return
+     */
+    @Auth("ADMIN")
+    @GetMapping("analyze")
+    public RespObj<AdminAnalyzeOutput> analyze() {
+        return RespObj.success(adminService.analyze());
     }
 }

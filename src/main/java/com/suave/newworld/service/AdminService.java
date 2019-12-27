@@ -1,6 +1,7 @@
 package com.suave.newworld.service;
 
 import com.suave.newworld.beans.input.UserLoginInput;
+import com.suave.newworld.beans.output.AdminAnalyzeOutput;
 import com.suave.newworld.beans.output.AdminCountOutput;
 import com.suave.newworld.beans.output.UserInfoOutput;
 import com.suave.newworld.beans.output.UserLoginOutput;
@@ -18,7 +19,7 @@ public interface AdminService {
      * @return
      * @throws RespException
      */
-    UserLoginOutput login(UserLoginInput input) throws RespException;
+    UserLoginOutput login(UserLoginInput input);
 
     /**
      * 管理员退出登录接口
@@ -26,7 +27,7 @@ public interface AdminService {
      * @param email
      * @throws RespException
      */
-    void logout(String email) throws RespException;
+    void logout(String email);
 
     /**
      * 通过email获取用户的信息
@@ -35,12 +36,18 @@ public interface AdminService {
      * @return
      * @throws RespException
      */
-    UserInfoOutput info(String email) throws RespException;
+    UserInfoOutput info(String email);
 
     /**
      * 返回管理端首页的三个数据
      * @return
      * @throws RespException
      */
-    AdminCountOutput countAll() throws RespException;
+    AdminCountOutput countAll();
+
+    /**
+     * 管理端首页统计最近七天发布文章数量
+     * @return
+     */
+    AdminAnalyzeOutput analyze();
 }
