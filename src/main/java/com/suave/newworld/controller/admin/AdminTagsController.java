@@ -1,11 +1,8 @@
 package com.suave.newworld.controller.admin;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.suave.newworld.beans.Page;
 import com.suave.newworld.beans.RespObj;
 import com.suave.newworld.beans.Tags;
-import com.suave.newworld.beans.User;
-import com.suave.newworld.beans.input.AdminUserInput;
 import com.suave.newworld.service.AdminTagsService;
 import com.suave.newworld.service.TagsService;
 import org.springframework.beans.factory.annotation.Autowired;
