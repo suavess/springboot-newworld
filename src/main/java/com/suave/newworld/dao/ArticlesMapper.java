@@ -130,6 +130,7 @@ public interface ArticlesMapper extends BaseMapper<Articles> {
     /**
      * 管理员端获取文章列表，通过作者username和标签name筛选，分页
      *
+     * @param title
      * @param author
      * @param tags
      * @param limit
@@ -137,6 +138,7 @@ public interface ArticlesMapper extends BaseMapper<Articles> {
      * @return
      */
     List<ArticlesOutput> adminArticleList(
+            @Param("title") String title,
             @Param("author") String author,
             @Param("tags") String tags,
             @Param("limit") Integer limit,
@@ -151,6 +153,7 @@ public interface ArticlesMapper extends BaseMapper<Articles> {
      * @return
      */
     Integer adminArticleListCount(
+            @Param("title") String title,
             @Param("author") String author,
             @Param("tags") String tags
     );

@@ -49,15 +49,15 @@ class NewWorldApplicationTests {
     void contextLoads() {
         List<Tags> tags = tagsMapper.selectList(null);
         List<Integer> tmp = new ArrayList<>();
-        tags.forEach(tag->{
+        tags.forEach(tag -> {
             tmp.add(tag.getId());
         });
         System.out.println("tmp = " + tmp);
     }
 
     @Test
-    public void testJwt(){
-        articlesMapper.adminArticleListCount(null, "vue");
+    public void testJwt() {
+        articlesMapper.adminArticleListCount(null, null, "vue");
     }
 
     //    @Test

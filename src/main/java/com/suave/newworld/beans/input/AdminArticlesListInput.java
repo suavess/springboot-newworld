@@ -12,6 +12,10 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class AdminArticlesListInput extends Page {
     /**
+     * 文章的标题
+     */
+    private String title;
+    /**
      * 文章的标签
      */
     private String tags;

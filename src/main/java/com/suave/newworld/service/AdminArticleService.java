@@ -17,4 +17,10 @@ public interface AdminArticleService {
      * @return
      */
     Page<ArticlesOutput> list(AdminArticlesListInput input);
+
+    /**
+     * 通过id删除文章
+     * @param id
+     */
+    void delById(Integer id);
 }

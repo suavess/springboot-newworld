@@ -192,6 +192,8 @@
         a.body,
         a.created_at,
         a.updated_at,
+        tags.name as t_name,
+        tags.id as tid,
         u.id as uid,
         u.username as author_username,
         u.bio as author_bio,
@@ -205,11 +207,14 @@
         left join article_favorites af on a.id = af.article_id
         where
         1 = 1
+        <if test="title != null">
+            and a.title like '%${title}%'
+        </if>
         <if test="author != null">
-            and u.username like '%#{author}%'
+            and u.username like '%${author}%'
         </if>
         <if test="tags != null">
-            and tags.name like '%#{tags}%'
+            and tags.name like '%${tags}%'
         </if>
         order by a.updated_at desc
         limit #{offset},#{limit}
@@ -221,13 +226,17 @@
         articles
         where
         1 = 1
-        <if test="author != null">
-            and articles.user_id in (select id from users where users.username like '%#{author}%')
+        <if test="title != null and title != ''">
+            and articles.title like '%${title}%'
         </if>
-        <if test="tags != null">
+        <if test="author != null and author != ''">
+            and articles.user_id in (select id from users where users.username like '%${author}%')
+        </if>
+        <!-- 为空时也不查，不然会查不到没有标签的文章 -->
+        <if test="tags != null and tags != ''">
             and articles.id in
             (select article_id from article_tags where tag_id in
-            (select id from tags where tags.name like '%#{tags}%')
+            (select id from tags where tags.name like '%${tags}%')
             )
         </if>
     </select>
