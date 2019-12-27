@@ -7,10 +7,12 @@
         <id column="id" property="id" />
         <result column="name" property="name" />
     </resultMap>
-
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, name
     </sql>
+    <delete id="delArticleTagsByTagsId">
+        delete from article_tags where tag_id = #{id}
+    </delete>
 
 </mapper>
