@@ -8,8 +8,8 @@ import com.suave.newworld.beans.output.UserLoginOutput;
 import com.suave.newworld.exception.RespException;
 
 /**
- * @author: Suave
- * @date: 2019-12-24 13:48
+ * @author Suave
+ * @date 2019-12-24 13:48
  */
 public interface AdminService {
     /**

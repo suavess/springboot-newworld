@@ -1,9 +1,8 @@
 package com.suave.newworld.dao;
 
-import com.suave.newworld.beans.Articles;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.suave.newworld.beans.Articles;
 import com.suave.newworld.beans.Tags;
-import com.suave.newworld.beans.input.AdminArticlesListInput;
 import com.suave.newworld.beans.output.ArticlesOutput;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -149,6 +148,7 @@ public interface ArticlesMapper extends BaseMapper<Articles> {
      * 管理员端获取文章数量，通过作者username和标签name筛选
      *
      * @param author
+     * @param title
      * @param tags
      * @return
      */

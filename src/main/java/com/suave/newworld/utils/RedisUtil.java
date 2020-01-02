@@ -11,9 +11,10 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @Author: Suave
- * @Date: 2019-11-28 21:26
- * @Desc: Redis工具类
+ * Redis工具类
+ *
+ * @author Suave
+ * @date 2019-11-28 21:26
  */
 @Component
 public final class RedisUtil {
@@ -482,7 +483,7 @@ public final class RedisUtil {
     public boolean lSet(String key, Object value, long time) {
         try {
             redisTemplate.opsForList().rightPush(key, value);
-            if (time > 0){
+            if (time > 0) {
                 expire(key, time);
             }
             return true;

@@ -62,7 +62,7 @@ public class UserController {
     @PutMapping("")
     public RespObj update(@RequestBody UserUpdateInput input, HttpServletRequest request) {
         String email = request.getAttribute("email").toString();
-        userService.update(input,email);
+        userService.update(input, email);
         return RespObj.success();
     }
 

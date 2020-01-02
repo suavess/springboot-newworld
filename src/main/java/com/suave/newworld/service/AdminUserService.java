@@ -5,8 +5,8 @@ import com.suave.newworld.beans.User;
 import com.suave.newworld.beans.input.AdminUserInput;
 
 /**
- * @author: Suave
- * @date: 2019-12-27 10:30
+ * @author Suave
+ * @date 2019-12-27 10:30
  */
 public interface AdminUserService {
     /**

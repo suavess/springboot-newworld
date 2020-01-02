@@ -1,11 +1,13 @@
 package com.suave.newworld.exception;
 
 /**
- * @Author: Suave
- * @Date: 2019-11-26 13:30
- * @Desc:
+ * @author Suave
+ * @date 2019-11-26 13:30
  */
 public enum RespError {
+    /**
+     * 枚举类错误对象
+     */
     TOKEN_ERROR(401, "非法Token！"),
     TOKEN_EXPIRED(402, "登录过期！"),
     TOKEN_OFFSITE(403,"账号在其他地方登录，如不是本人登录请及时修改密码！"),

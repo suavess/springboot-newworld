@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * @author: Suave
- * @date: 2019-12-27 14:27
+ * @author Suave
+ * @date 2019-12-27 14:27
  */
 @Service
 public class AdminTagsServiceImpl implements AdminTagsService {

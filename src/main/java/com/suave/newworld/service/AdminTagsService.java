@@ -4,8 +4,8 @@ import com.suave.newworld.beans.Page;
 import com.suave.newworld.beans.Tags;
 
 /**
- * @author: Suave
- * @date: 2019-12-27 14:25
+ * @author Suave
+ * @date 2019-12-27 14:25
  */
 public interface AdminTagsService {
     /**

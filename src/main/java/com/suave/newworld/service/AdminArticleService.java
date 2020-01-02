@@ -5,8 +5,8 @@ import com.suave.newworld.beans.input.AdminArticlesListInput;
 import com.suave.newworld.beans.output.ArticlesOutput;
 
 /**
- * @author: Suave
- * @date: 2019-12-25 10:58
+ * @author Suave
+ * @date 2019-12-25 10:58
  */
 public interface AdminArticleService {
 

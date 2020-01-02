@@ -56,6 +56,7 @@ public class CommentsController {
 
     /**
      * "/comments"(Delete)返回某一篇文章的某一条评论
+     *
      * @param input
      * @param request
      * @return
@@ -64,7 +65,7 @@ public class CommentsController {
     @DeleteMapping("")
     public RespObj del(@RequestBody CommentsDeleteInput input, HttpServletRequest request) {
         String email = request.getAttribute("email").toString();
-        commentsService.del(input.getAid(),input.getCid(), email);
+        commentsService.del(input.getAid(), input.getCid(), email);
         return RespObj.success();
     }
 }

@@ -8,9 +8,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @Author: Suave
- * @Date: 2019-11-26 11:55
- * @Desc: 自定义需要token的注解
+ * 自定义需要token的注解
+ *
+ * @author Suave
+ * @date 2019-11-26 11:55
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})

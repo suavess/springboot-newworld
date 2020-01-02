@@ -4,9 +4,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * @Author: Suave
- * @Date: 2019-11-26 13:28
- * @Desc:
+ * @author Suave
+ * @date 2019-11-26 13:28
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

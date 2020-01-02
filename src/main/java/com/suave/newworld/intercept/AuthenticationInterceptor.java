@@ -20,9 +20,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @Author: Suave
- * @Date: 2019-11-26 11:59
- * @Desc: 权限拦截器
+ * 权限拦截器
+ *
+ * @author Suave
+ * @date 2019-11-26 11:59
  */
 @Component
 public class AuthenticationInterceptor implements HandlerInterceptor {
@@ -63,7 +64,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         try {
             // 需要的权限
             String value = auth.value();
-            if (token == null){
+            if (token == null) {
                 throw new RespException(RespError.USER_UN_LOGIN);
             }
             if (jwtTokenUtil.isTokenExpired(token)) {
@@ -88,7 +89,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 throw new RespException(RespError.TOKEN_ERROR);
             }
         } catch (Exception e) {
-            if (e instanceof ExpiredJwtException){
+            if (e instanceof ExpiredJwtException) {
                 throw new RespException(RespError.TOKEN_EXPIRED);
             } else {
                 throw e;

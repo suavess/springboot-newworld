@@ -30,8 +30,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 /**
- * @author: Suave
- * @date: 2019-12-24 13:48
+ * @author Suave
+ * @date 2019-12-24 13:48
  */
 @Service
 public class AdminServiceImpl implements AdminService {

@@ -53,12 +53,12 @@ public class ErrorAdviceController implements ErrorController {
     }
 
     /**
-     * @Valid 注解抛出异常的时候使用的注解
      * @param e
      * @return
+     * @Valid 注解抛出异常的时候使用的注解
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public RespObj verException(MethodArgumentNotValidException e){
+    public RespObj verException(MethodArgumentNotValidException e) {
         return RespObj.failure(e);
     }
 }

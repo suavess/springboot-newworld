@@ -1,7 +1,9 @@
 package com.suave.newworld.utils;
 
 import com.suave.newworld.beans.User;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -9,19 +11,20 @@ import java.util.Date;
 import java.util.HashMap;
 
 /**
- * @Author: Suave
- * @Date: 2019-11-26 12:06
- * @Desc: Jwt工具类
+ * Jwt工具类
+ *
+ * @author Suave
+ * @date 2019-11-26 12:06
  */
 @Component
 public class JwtTokenUtil {
-    @Value("${token.iss}")
-    private String iss;
     /**
      * Token过期时间(秒)
      */
     @Value("${token.expiration}")
     public long expiration;
+    @Value("${token.iss}")
+    private String iss;
     /**
      * Token秘钥
      */
@@ -30,13 +33,14 @@ public class JwtTokenUtil {
 
     /**
      * 生成Token，存入username
+     *
      * @param user
      * @return
      */
     public String createToken(User user) {
         //可以将基本不重要的对象信息放到claims中，此处信息不多,见简单直接放到配置内
-        HashMap<String,Object> claims = new HashMap<>(1);
-        claims.put("email",user.getEmail());
+        HashMap<String, Object> claims = new HashMap<>(1);
+        claims.put("email", user.getEmail());
         //id是重要信息，进行加密下
         return Jwts.builder()
                 .signWith(SignatureAlgorithm.HS512, secret)
